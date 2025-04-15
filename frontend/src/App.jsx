@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Explore from './pages/Explore';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
+import ProtectedRoute from './context/ProtectedRoute';
 
 function App() {
 
@@ -10,10 +11,14 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Dashboard />} />
           <Route path='/signup' element={<Signup />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/explore' element={<Explore />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path='/dashboard' element={<Dashboard />} />
+          </Route>
+          <Route element={<ProtectedRoute />}>
+            <Route path='/explore' element={<Explore />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </>

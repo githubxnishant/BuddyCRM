@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import userModel from "../models/user.model.js";
 
 export const userRegister = async (req, res) => {
@@ -75,41 +75,6 @@ export const userLogin = async (req, res) => {
         })
     }
 }
-
-// export const getUser = async (req, res) => {
-//     try {
-//         const token = req.headers.authorization?.split(" ")[1]; 
-//         if (!token) return res.status(401).json({ error: "Unauthorized" });
-//         const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-//         const user = await userModel.findById(decoded.id).select("-password"); 
-//         if (!user) return res.status(404).json({ error: "User not found" });
-//         res.json({ user });
-//     } catch (error) {
-//         res.status(500).json({ error: "Invalid or expired token" });
-//     }
-// };
-
-// export const getUser = async (req, res) => {
-//     try {
-//         const token = req.headers.authorization?.split(" ")[1]; 
-//         if (!token) {
-//             return res.status(401).json({ error: "Token missing from request" });
-//         }
-
-//         const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-
-//         const userId = decoded?.user?.id; // ✅ Properly extract id
-//         if (!userId) return res.status(401).json({ error: "Invalid token structure" });
-
-//         const user = await userModel.findById(userId).select("-password");
-//         if (!user) return res.status(404).json({ error: "User not found" });
-
-//         res.json({ user });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ error: "Invalid or expired token" });
-//     }
-// };
 
 export const getUser = async (req, res) => {
     try {
