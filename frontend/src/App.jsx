@@ -1,5 +1,5 @@
 import Dashboard from './pages/Dashboard'
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import Explore from './pages/Explore';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
@@ -14,6 +14,7 @@ function App() {
           <Route path='/signup' element={<Signup />} />
           <Route path='/login' element={<Login />} />
           <Route path="/" element={<Navigate to="/dashboard" />} />
+          <Route path='*' element={<Navigate to='/dashboard' />} />
           <Route element={<ProtectedRoute />}>
             <Route path='/dashboard' element={<Dashboard />} />
           </Route>
