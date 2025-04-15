@@ -1,6 +1,7 @@
 import express from 'express';
-import cors from 'cors'
-import { config } from 'dotenv'
+import cors from 'cors';
+import { config } from 'dotenv';
+import userRouter from "./routes/userRoute.js";
 
 const app = express();
 
@@ -8,13 +9,15 @@ config({
     path: "./config/logs.env",
 })
 
+// Middlewares
+app.use(express.json());
 app.use(cors({
-    origin: ['localhost:5173'],
+    origin: ['http://localhost:5173'],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
 }));
 
-// Middlewares
-app.use(express.json());
+app.use("/", userRouter);
 
 app.get("/", (req, res) => {
     res.send("Server is working...");
