@@ -26,7 +26,7 @@ const Dashboard = () => {
                 return;
             }
             try {
-                const response = await axios.get("http://localhost:3000/api/fetch/user", {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/fetch/user`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setUserName(response.data.user.name);
