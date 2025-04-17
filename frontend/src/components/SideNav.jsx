@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
     ChevronDown,
     ChevronRight,
@@ -18,6 +19,34 @@ import {
 
 export default function Sidebar() {
     const [platformOpen, setPlatformOpen] = useState(true);
+    const [user, setUser] = useState('');
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const token = localStorage.getItem("authToken");
+
+            if (!token) {
+                navigate("/login");
+                return;
+            }
+
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/fetch/user`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+
+                setUser(response.data.user);
+            } catch (error) {
+                console.error("Error fetching user:", error);
+                localStorage.removeItem("authToken");
+                navigate("/login");
+            }
+        };
+
+        fetchUser();
+    }, []);
 
     return (
         <div className="w-64 h-screen bg-[#18181b] text-white flex flex-col justify-between py-5">
@@ -56,24 +85,24 @@ export default function Sidebar() {
                 <div className="mt-6">
                     <div className="text-xs uppercase text-gray-400 mb-2">More Features (Under Dev)</div>
                     <div className="space-y-1">
-                            <button
-                                onClick={() => setPlatformOpen(!platformOpen)}
-                                className="flex items-center justify-between w-full text-sm px-2 py-1.5 rounded hover:bg-zinc-800"
-                            >
-                                <div className="flex items-center gap-2">
-                                    <LayoutDashboard size={16} />
-                                    <span>Playground</span>
-                                </div>
-                                {platformOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
-                            </button>
+                        <button
+                            onClick={() => setPlatformOpen(!platformOpen)}
+                            className="flex items-center justify-between w-full text-sm px-2 py-1.5 rounded hover:bg-zinc-800"
+                        >
+                            <div className="flex items-center gap-2">
+                                <LayoutDashboard size={16} />
+                                <span>Playground</span>
+                            </div>
+                            {platformOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+                        </button>
 
-                            {platformOpen && (
-                                <div className="ml-6 space-y-1 transition-all duration-500 border-l px-2">
-                                    <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">History</div>
-                                    <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">Starred</div>
-                                    <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">Settings</div>
-                                </div>
-                            )}
+                        {platformOpen && (
+                            <div className="ml-6 space-y-1 transition-all duration-500 border-l px-2">
+                                <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">History</div>
+                                <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">Starred</div>
+                                <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">Settings</div>
+                            </div>
+                        )}
 
                         <div className="flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">
                             <Briefcase size={16} />
@@ -113,11 +142,11 @@ export default function Sidebar() {
                             className="w-7 h-7 rounded-full"
                         />
                         <div>
-                            <p className="text-sm font-semibold">shadcn</p>
-                            <p className="text-xs text-gray-400">m@example.com</p>
+                            <p className="text-sm font-semibold">{user.name}</p>
+                            <p className="text-xs text-gray-400">{user.email}</p>
                         </div>
+                        <ChevronDown size={16} className="text-gray-400 cursor-not-allowed" />
                     </div>
-                    <ChevronDown size={16} className="text-gray-400" />
                 </div>
             </div>
         </div>

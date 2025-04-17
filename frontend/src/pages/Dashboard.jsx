@@ -19,23 +19,26 @@ const Dashboard = () => {
 
     useEffect(() => {
         const fetchUser = async () => {
-            const token = localStorage.getItem("authToken");
-
+            const token = localStorage.getItem("authToken");  
+        
             if (!token) {
                 navigate("/login");
                 return;
             }
+        
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/fetch/user`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
-                setUserName(response.data.user.name);
+
+                setUserName(response.data.user.name); 
             } catch (error) {
                 console.error("Error fetching user:", error);
                 localStorage.removeItem("authToken");
                 navigate("/login");
             }
-        }
+        };
+        
         fetchUser();
     }, []);
 

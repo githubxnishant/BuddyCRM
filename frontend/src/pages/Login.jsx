@@ -14,18 +14,17 @@ export default function AuthForm() {
         e.preventDefault();
         try {
             const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, {
-                params: {
-                    "email": email,
-                    "password": password,
-                }
-            })
-            const { token } = response.data;
-            localStorage.setItem("authToken", token);
-            navigate("/dashboard");
+                email: email, 
+                password: password,
+            });
+            if (response.data.success) {
+                localStorage.setItem("authToken", response.data.token);  
+                navigate("/dashboard");
+            }
         } catch (error) {
-            console.error("Login Failed", error)
+            console.error("Login Failed", error.response?.data || error.message);  // Log the error from the response
         }
-    }
+    };
 
     return (
         <div className="min-h-screen bg-[#1e1e1e] flex items-center justify-center px-4">
