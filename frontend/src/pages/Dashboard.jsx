@@ -32,7 +32,7 @@ const Dashboard = () => {
                 setUserName(response.data.user.name);
             } catch (error) {
                 console.error("Error fetching user:", error);
-                localStorage.removeItem("token");
+                localStorage.removeItem("authToken");
                 navigate("/login");
             }
         }

@@ -13,10 +13,10 @@ export default function AuthForm() {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, {
                 params: {
-                    email,
-                    password,
+                    "email": email,
+                    "password": password,
                 }
             })
             const { token } = response.data;

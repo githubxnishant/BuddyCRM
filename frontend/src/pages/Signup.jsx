@@ -13,7 +13,6 @@ export default function AuthForm() {
     const handleRegister = async (e) => {
         try {
             e.preventDefault();
-            console.log("Backend URL:", import.meta.env.VITE_BACKEND_URL);
             const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/register`, { name, email, password });
             if(!response) {
                 console.log("lkjhgf");
