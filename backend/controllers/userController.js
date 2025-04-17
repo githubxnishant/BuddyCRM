@@ -43,11 +43,11 @@ export const userRegister = async (req, res) => {
 
 export const userLogin = async (req, res) => {
     try {
-        const { email, password } = req.query;
+        const { email, password } = req.body;
 
         // Check if user exists
-        const user = await userModel.findOne({ email });
-        if (!user) return res.status(400).json({
+        const user = await userModel.findOne({ "email": email })
+        if (!user) return res.json({
             success: false,
             message: 'User not found in db'
         });
@@ -60,7 +60,7 @@ export const userLogin = async (req, res) => {
         });
 
         // Generate JWT
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, { expiresIn: "10m" });
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, { expiresIn: '7d' });
 
         res.status(200).json({
             success: true,
@@ -78,23 +78,27 @@ export const userLogin = async (req, res) => {
 
 export const getUser = async (req, res) => {
     try {
-        const token = req.headers.authorization?.split(" ")[1]; // Extract token
+        const token = req.headers.authorization?.split(" ")[1];
 
         if (!token) {
             return res.status(401).json({ error: "Token missing from request" });
         }
 
-        // Verify the token
-        const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        try {
+            let decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        } catch (err) {
+            return res.status(401).json({ error: "Invalid or expired token" });
+        }
 
-        const user = await userModel.findById(decoded.id).select("-password");  // Find user by decoded ID
+        const user = await userModel.findById(decoded.id).select("-password");
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
 
-        res.json({ user });
+        res.status(200).json({ user });
+
     } catch (error) {
-        console.error("Token verification error:", error);
-        res.status(500).json({ error: "Invalid or expired token" });
+        console.error("Server error in getUser:", error);
+        res.status(500).json({ error: "Server error" });
     }
 };
