@@ -15,7 +15,7 @@ const MiniCard = () => {
 
     return (
         <>
-            <div className="max-w-md w-88 mx-2 mb-2 bg-zinc-900 text-zinc-100 rounded-2xl shadow-lg p-6 space-y-5 border border-zinc-800">
+            <div className="max-w-md w-88 mx-2 mb-2 bg-zinc-900 text-zinc-100 rounded-lg shadow-lg p-6 space-y-5 border border-zinc-800">
                 {/* Header */}
                 <div className="flex items-center gap-3">
                     <div className="bg-indigo-600 text-white rounded-full w-12 h-10 flex items-center justify-center font-bold text-lg">

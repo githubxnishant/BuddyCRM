@@ -5,10 +5,7 @@ import {
     ChevronDown,
     ChevronRight,
     LayoutDashboard,
-    Clock,
-    Folder,
     BookOpen,
-    Settings,
     Users,
     Briefcase,
     Globe,
@@ -20,6 +17,7 @@ import {
 export default function Sidebar() {
     const [platformOpen, setPlatformOpen] = useState(true);
     const [user, setUser] = useState('');
+    const [activeTab, setActiveTab] = useState('dashboard');
 
     const navigate = useNavigate();
 
@@ -66,20 +64,21 @@ export default function Sidebar() {
                 <div className="text-xs uppercase w-full flex justify-start px-2 text-gray-400 mb-2">Quick Nav</div>
 
 
-                <div className="flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">
+                <Link to={'/dashboard'}><div onClick={() => setActiveTab("dashboard")} className={`flex transition-all duration-300 items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 ${window.location.href === "http://localhost:5173/dashboard" ? "bg-zinc-700" : ""} cursor-pointer`}>
                     <LayoutDashboard size={16} />
-                    <Link to={'/'}>Dashboard</Link>
-                </div>
+                    Dashboard
+                </div></Link>
 
-                <div className="flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">
+                <Link to={'/explore'}><div onClick={() => setActiveTab("explore")} className={`flex transition-all duration-300 items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 ${window.location.href === "http://localhost:5173/explore" ? "bg-zinc-700" : ""} cursor-pointer`}>
                     <Users size={16} />
-                    <span>Explore</span>
-                </div>
+                    {/* <span>Explore</span> */}
+                    Explore
+                </div></Link>
 
-                <div className="flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">
+                <Link to={'/interactions'}><div onClick={() => setActiveTab("interactions")} className={`flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer duration-300 transition-all ${window.location.href === "http://localhost:5173/interactions" ? "bg-zinc-700" : ""}`}>
                     <Send size={16} />
                     <span>Interactions</span>
-                </div>
+                </div></Link>
 
                 {/* Projects Section */}
                 <div className="mt-6">
@@ -136,11 +135,14 @@ export default function Sidebar() {
                 {/* User */}
                 <div className="flex items-center justify-between mt-2 bg-zinc-800 px-3 py-2 rounded-lg">
                     <div className="flex items-center gap-2">
-                        <img
+                        {/* <img
                             src="https://github.com/shadcn.png"
                             alt="user"
                             className="w-7 h-7 rounded-full"
-                        />
+                        /> */}
+                        <div className="bg-indigo-600 text-white rounded-full w-7 h-7 flex items-center justify-center font-bold text-lg">
+                            {user.name?.charAt(0)}
+                        </div>
                         <div>
                             <p className="text-sm font-semibold">{user.name}</p>
                             <p className="text-xs text-gray-400">{user.email}</p>

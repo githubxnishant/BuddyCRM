@@ -64,7 +64,7 @@ export const userLogin = async (req, res) => {
         }
 
         // Generate JWT Token with 7 days expiration
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, { expiresIn: '7d' });
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
 
         // Send the response with token (no cookies involved)
         return res.status(200).json({
@@ -81,7 +81,6 @@ export const userLogin = async (req, res) => {
         });
     }
 };
-
 
 export const getUser = async (req, res) => {
     try {

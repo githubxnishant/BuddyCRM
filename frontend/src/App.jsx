@@ -4,6 +4,7 @@ import Explore from './pages/Explore';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import ProtectedRoute from './context/ProtectedRoute';
+import Interactions from './pages/Interactions';
 
 function App() {
 
@@ -20,6 +21,9 @@ function App() {
           </Route>
           <Route element={<ProtectedRoute />}>
             <Route path='/explore' element={<Explore />} />
+          </Route>
+          <Route element={<ProtectedRoute />}>
+            <Route path='/interactions' element={<Interactions />} />
           </Route>
         </Routes>
       </BrowserRouter>

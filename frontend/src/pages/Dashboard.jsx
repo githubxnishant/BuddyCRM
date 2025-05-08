@@ -3,7 +3,7 @@ import Sidebar from '../components/SideNav';
 import axios from 'axios';
 import DashboardStatCard from '../components/DashboardStatCard';
 import MiniCard from '../components/MiniCard';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
 
@@ -19,26 +19,26 @@ const Dashboard = () => {
 
     useEffect(() => {
         const fetchUser = async () => {
-            const token = localStorage.getItem("authToken");  
-        
+            const token = localStorage.getItem("authToken");
+
             if (!token) {
                 navigate("/login");
                 return;
             }
-        
+
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/fetch/user`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
-                setUserName(response.data.user.name); 
+                setUserName(response.data.user.name);
             } catch (error) {
                 console.error("Error fetching user:", error);
                 localStorage.removeItem("authToken");
                 navigate("/login");
             }
         };
-        
+
         fetchUser();
     }, []);
 
@@ -46,8 +46,6 @@ const Dashboard = () => {
         <>
             <div className='flex items-center gap-3 h-screen w-screen bg-zinc-900 px-5'>
                 {isNavOpen ? <Sidebar /> : ''}
-
-
                 <section className={`bg-[#09090b] rounded-lg h-[95vh] transition-all duration-300 w-full ${isNavOpen ? '' : 'w-screen'}`}>
                     {/* Top Header */}
                     <div className='h-12 px-5 flex items-center w-full border-b-2 border-zinc-900'>
@@ -70,18 +68,18 @@ const Dashboard = () => {
 
                     {/* Stats Card */}
                     <section className='flex px-5'>
-                        <DashboardStatCard />
-                        <DashboardStatCard />
-                        <DashboardStatCard />
-                        <DashboardStatCard />
+                        <DashboardStatCard heading={"Total Connections"} stats={"10+"} subheading={"Connected till now"} />
+                        <DashboardStatCard heading={"New Connections"} stats={"5+"} subheading={"Connected last week"} />
+                        <DashboardStatCard heading={"Total Interactions"} stats={"50+"} subheading={"Interactions generated till now"} />
+                        <DashboardStatCard heading={"Recent Interactions"} stats={"15+"} subheading={"Interacted this week"} />
                     </section>
 
                     <section className='px-7 flex items-center w-full'>
                         <div className='flex py-5 flex-col items-center h-full w-full border rounded-lg border-[#27272a]'>
-                            <p className='text-white w-full text-left px-10 pb-2 text-xl flex justify-between'>New Connections!
-                                <button className="bg-white text-base w-28 flex justify-center items-center gap-2 cursor-pointer text-black px-3 py-2 rounded-md hover:bg-zinc-200 transition">View All</button>
+                            <p className='text-white w-full text-left px-7 pb-4 text-xl flex justify-between'>New Connections!
+                                <Link to={"/explore"}><button className="bg-white text-base w-auto flex justify-center items-center gap-2 cursor-pointer text-black px-5 py-1 rounded-md hover:bg-zinc-200 transition">View All</button></Link>
                             </p>
-                            <div className='w-full border flex items-center justify-center'>
+                            <div className='w-full flex items-center gap-3 justify-center'>
                                 <MiniCard />
                                 <MiniCard />
                                 <MiniCard />

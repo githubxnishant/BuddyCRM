@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { config } from 'dotenv';
 import userRouter from "./routes/userRoute.js";
+import cardRouter from './routes/cardRoute.js';
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(cors({
 }));
 
 app.use("/", userRouter);
+app.use("/", cardRouter);
 
 app.get("/", (req, res) => {
     res.send("Server is working...");

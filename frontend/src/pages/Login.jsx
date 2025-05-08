@@ -7,6 +7,7 @@ export default function AuthForm() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
     const navigate = useNavigate();
 
@@ -14,11 +15,11 @@ export default function AuthForm() {
         e.preventDefault();
         try {
             const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, {
-                email: email, 
+                email: email,
                 password: password,
             });
             if (response.data.success) {
-                localStorage.setItem("authToken", response.data.token);  
+                localStorage.setItem("authToken", response.data.token);
                 navigate("/dashboard");
             }
         } catch (error) {
@@ -65,18 +66,32 @@ export default function AuthForm() {
                     <div>
                         <label className="text-sm flex justify-between">
                             Password
-                            <a href="#" className="text-indigo-400 text-xs hover:underline">
-                                Forgot your password?
-                            </a>
+                            {!showPassword ?
+                                <p value={showPassword} onClick={() => setShowPassword(!showPassword)} className="text-indigo-400 text-xs hover:underline">
+                                    Show Password
+                                </p> :
+                                <p value={showPassword} onClick={() => setShowPassword(!showPassword)} className="text-indigo-400 text-xs hover:underline">
+                                    Hide Password
+                                </p>}
                         </label>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="••••••••"
-                            className="w-full mt-1 px-3 py-2 bg-[#1e1e1e] border border-gray-700 rounded text-sm placeholder-gray-400 focus:outline-none focus:ring focus:ring-indigo-500"
-                            required
-                        />
+                        {showPassword ?
+                            <input
+                                type="text"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="••••••••"
+                                className="w-full mt-1 px-3 py-2 bg-[#1e1e1e] border border-gray-700 rounded text-sm placeholder-gray-400 focus:outline-none focus:ring focus:ring-indigo-500"
+                                required
+                            /> :
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="••••••••"
+                                className="w-full mt-1 px-3 py-2 bg-[#1e1e1e] border border-gray-700 rounded text-sm placeholder-gray-400 focus:outline-none focus:ring focus:ring-indigo-500"
+                                required
+                            />
+                        }
                     </div>
 
                     <button
