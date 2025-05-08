@@ -12,12 +12,14 @@ config({
 
 // Middlewares
 app.use(express.json());
-app.use(cors({
-    origin: ["https://buddy-crm.vercel.app/login", "https://buddy-crm.vercel.app/dashboard", "https://buddy-crm.vercel.app/", "https://buddy-crm.vercel.app", "https://buddy-crm-git-main-nishant-chauhans-projects.vercel.app/", "https://buddy-crm-nishant-chauhans-projects.vercel.app/"],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
-}));
+app.use(
+    cors({
+        origin: ["https://buddy-crm.vercel.app"],
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        credentials: true,
+    })
+);
+
 
 app.use("/", userRouter);
 app.use("/", cardRouter);
