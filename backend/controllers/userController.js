@@ -37,6 +37,7 @@ export const userRegister = async (req, res) => {
         res.status(500).json({
             success: false,
             message: "User registration API crashed!",
+            error
         });
     }
 };
