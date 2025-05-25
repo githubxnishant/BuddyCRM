@@ -64,7 +64,7 @@ export default function ProfileCard({ addNew }) {
     return (
         <>
             {
-                cards[0] != null
+                cards[0] == null
                     ?
                     <div className="text-white min-h-[65vh] w-[315%] flex justify-center items-center">Add a card!</div>
                     :
