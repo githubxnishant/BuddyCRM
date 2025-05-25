@@ -64,9 +64,9 @@ export default function ProfileCard({ addNew }) {
     return (
         <>
             {
-                cards[0] == null
+                cards[0] != null
                     ?
-                    <div className="text-white min-h-[65vh] w-[300%] flex justify-center items-center">Add a card!</div>
+                    <div className="text-white min-h-[65vh] w-[315%] flex justify-center items-center">Add a card!</div>
                     :
                     <>
                         {cards.map((user, key) => (
@@ -145,7 +145,6 @@ export default function ProfileCard({ addNew }) {
                                 </div>
                             </div>
                         ))}
-
                     </>
             }
         </>

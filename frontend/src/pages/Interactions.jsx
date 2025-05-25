@@ -44,9 +44,7 @@ const Interactions = () => {
         <>
             <div className='flex items-center gap-3 h-screen w-screen bg-zinc-900 px-5'>
                 {isNavOpen ? <Sidebar /> : ''}
-
-
-                <section className={`bg-[#09090b] rounded-lg h-[95vh] transition-all duration-300 w-full ${isNavOpen ? '' : 'w-screen'}`}>
+                <section className={`bg-[#09090b] rounded-lg h-[95vh] transition-all absolute right-4 duration-500 ${isNavOpen ? 'w-[80vw]' : 'w-[98vw]'}`}>
                     {/* Top Header */}
                     <div className='h-12 px-5 flex items-center w-full border-b-2 border-zinc-900'>
                         <div value='isNavOpen' className='cursor-pointer' onClick={() => setIsNavOpen(!isNavOpen)}>

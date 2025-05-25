@@ -246,8 +246,8 @@ const Explore = () => {
                     </section>
 
                     {/* Profile Cards */}
-                    <section className='h-[73%] overflow-auto'>
-                        <div className='grid sm:grid-cols-2 md:grid-cols-4 overflow-auto gap-3 px-5'>
+                    <section className='h-[70%] overflow-auto'>
+                        <div className='grid sm:grid-cols-2 md:grid-cols-3 overflow-auto gap-5 px-5'>
                             <ExploreCard addNew={added} />
                         </div>
                     </section>

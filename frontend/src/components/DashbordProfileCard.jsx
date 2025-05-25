@@ -63,7 +63,7 @@ const MiniCard = () => {
                     {userCard.slice(0, 5).map((card, index) => (
                         <div
                             key={index}
-                            className="min-w-80 mx-2 mb-2 bg-zinc-900 text-zinc-100 rounded-lg shadow-lg p-6 space-y-5 border border-zinc-800"
+                            className="min-w-80 mx-2 mb-3 bg-zinc-900 text-zinc-100 rounded-lg shadow-lg p-6 space-y-5 border border-zinc-800"
                         >
                             {/* Header */}
                             <div className="flex items-center gap-3">
@@ -88,7 +88,7 @@ const MiniCard = () => {
                                 <DetailItem icon={<Calendar size={16} />} label="Date" value={new Date(card.transactionDate).toLocaleDateString("en-GB")} />
                             </div>
 
-                            <div className="flex gap-3">
+                            {/* <div className="flex gap-3">
                                 <button className="bg-white w-1/2 flex text-sm justify-center items-center gap-2 cursor-pointer text-black px-4 py-2 rounded-md hover:bg-zinc-200 transition">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z" /><path d="m21.854 2.147-10.94 10.939" /></svg>
                                     Interact
@@ -97,7 +97,7 @@ const MiniCard = () => {
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><line x1="17" x2="22" y1="8" y2="13" /><line x1="22" x2="17" y1="8" y2="13" /></svg>
                                     Remove
                                 </button>
-                            </div>
+                            </div> */}
                         </div>
                     ))}
                 </>

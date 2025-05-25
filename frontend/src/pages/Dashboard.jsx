@@ -80,7 +80,7 @@ const Dashboard = () => {
         <>
             <div className='flex items-center gap-3 h-screen w-screen bg-zinc-900 px-5'>
                 {isNavOpen ? <Sidebar /> : ''}
-                <section className={`bg-[#09090b] rounded-lg h-[95vh] transition-all absolute right-4 duration-500 ${isNavOpen ? 'w-[82vw]' : 'w-[98vw]'}`}>
+                <section className={`bg-[#09090b] rounded-lg h-[95vh] transition-all absolute right-4 duration-500 ${isNavOpen ? 'w-[80vw]' : 'w-[98vw]'}`}>
                     {/* Top Header */}
                     <div className='h-12 px-5 flex items-center w-full border-b-2 border-zinc-900'>
                         <div value='isNavOpen' className='cursor-pointer' onClick={() => setIsNavOpen(!isNavOpen)}>
@@ -108,8 +108,8 @@ const Dashboard = () => {
                     </section>
 
                     <section className='px-7 flex items-center w-full'>
-                        <div className='flex py-5 flex-col items-center h-full w-full border rounded-lg border-[#27272a]'>
-                            <p className='text-white w-full text-left px-7 pb-4 text-2xl flex justify-between'>Recent Transactions!
+                        <div className='flex py-3 flex-col items-center h-full w-full border-2 rounded-lg border-[#27272a]'>
+                            <p className='text-white w-full text-left px-7 pb-4 my-1 text-2xl flex justify-between'>Recent Transactions!
                                 <Link to={"/explore"}><button className="bg-white text-base w-auto flex justify-center items-center gap-2 cursor-pointer text-black px-5 py-1 rounded-md hover:bg-zinc-200 transition">View All</button></Link>
                             </p>
                             <div className='w-full px-5'>
