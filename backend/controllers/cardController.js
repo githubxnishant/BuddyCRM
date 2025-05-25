@@ -2,7 +2,7 @@ import cardModel from "../models/cards.model.js";
 
 export const addNewCard = async (req, res) => {
     try {
-        const { name, email, company, designation, tag, lastContacted, notes } = req.body;
+        const { name, email, transactionType, transactionAmount, tag, transactionDate, notes } = req.body;
 
         const alreadyAddded = await cardModel.findOne({ requestedBy: req.user._id, email });
         if (alreadyAddded) {
@@ -15,10 +15,10 @@ export const addNewCard = async (req, res) => {
         const newCard = new cardModel({
             name,
             email,
-            company,
-            designation,
+            transactionType,
+            transactionAmount,
             tag,
-            lastContacted,
+            transactionDate,
             notes,
             requestedBy: req.user._id
         });
@@ -55,7 +55,7 @@ export const getAllCards = async (req, res) => {
 export const deleteCard = async (req, res) => {
     try {
         const { id } = req.params;
-        const card = await cardModel.find({ requestedBy: req.user._id }).deleteOne({ id });
+        const card = await cardModel.deleteOne({ id, requestedBy: req.user._id });
         if (!card) {
             return res.staus(500).json({
                 success: false, 

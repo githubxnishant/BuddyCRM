@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Sidebar from '../components/SideNav'
 import Dropdown from '../components/Dropdown';
-import ProfileCard from '../components/ProfileCard';
+import ExploreCard from '../components/ExploreCard';
 import { Tag, User, StickyNote, House, Calendar, Edit, Save, Mail, Cross, EyeClosed, X, ShieldAlert } from "lucide-react";
 import axios from 'axios';
 
@@ -21,21 +21,22 @@ const Explore = () => {
         setIsEditing(!isEditing);
     };
 
-    const addDropdownOptions = ["Category", "Friend", "Client", "VIP"];
-    const dropdownOptions = ["All Categories", "Friends", "Clients", "VIPs"];
+    const addDropdownOptions = ["Friend", "Relatives", "Client", "VIP", "Others"];
+    const dropdownOptions = ["All Categories", "Friends", , "Relative", "Clients", "VIPs", "Others"];
+    const addTransactionOptions = ["Owe (To Pay)", "Lend (To Collect)"]
     const [client, setClient] = useState();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
-    const [company, setCompany] = useState('');
-    const [designation, setDesignation] = useState('');
+    const [transactionType, setTransactionType] = useState('');
+    const [transactionAmount, setTransactionAmount] = useState('');
     const [tag, setTag] = useState('');
-    const [lastContacted, setLastContacted] = useState('');
+    const [transactionDate, setTransactionDate] = useState('');
     const [notes, setNotes] = useState('');
 
     const addConnection = async (e) => {
         e.preventDefault();
 
-        const token = localStorage.getItem('authToken'); // Get token first
+        const token = localStorage.getItem('authToken');
 
         if (!token) {
             console.error("No token found. Please login again.");
@@ -46,23 +47,29 @@ const Explore = () => {
             const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/card/add`, {
                 name,
                 email,
-                company,
-                designation,
+                transactionType,
+                transactionAmount,
                 tag,
-                lastContacted,
+                transactionDate,
                 notes
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-
+            setName('');
+            setEmail('');
+            setTransactionType('');
+            setTransactionAmount('');
+            setTag('');
+            setTransactionDate('');
+            setNotes('');
             setIsAddNew(false);
             setAdded(!added);
         } catch (error) {
-            if(error.response.status == 409){
+            if (error.response.status == 409) {
                 alert("User already exists!");
-            } else{
+            } else {
                 console.log(error);
             }
         }
@@ -118,22 +125,26 @@ const Explore = () => {
                                 />
                             </div>
 
-                            <div className="grid grid-cols-2 gap-4 mt-3">
-                                <input
-                                    type="text"
+                            <div className="flex items-center mt-3 gap-2">
+                                <select
                                     required
-                                    placeholder="Company"
-                                    value={company}
-                                    onChange={(e) => setCompany(e.target.value)}
-                                    className="w-full px-3 py-2 rounded-lg border border-[#444] bg-[#2a2a2a] text-white focus:outline-none text-sm"
-                                />
+                                    value={transactionType}
+                                    onChange={(e) => setTransactionType(e.target.value)}
+                                    className="w-1/2 px-3 py-2 rounded-lg border border-[#444] bg-[#2a2a2a] text-white text-sm"
+                                >
+                                    <option value="">Type</option>
+                                    {addTransactionOptions.map((option, index) => (
+                                        <option key={index} value={option}>{option}</option>
+                                    ))}
+                                </select>
+
                                 <input
-                                    type="text"
+                                    type="number"
                                     required
-                                    placeholder="Designation"
-                                    value={designation}
-                                    onChange={(e) => setDesignation(e.target.value)}
-                                    className="w-full px-3 py-2 rounded-lg border border-[#444] bg-[#2a2a2a] text-white focus:outline-none text-sm"
+                                    placeholder="Amount"
+                                    value={transactionAmount}
+                                    onChange={(e) => setTransactionAmount(e.target.value)}
+                                    className="w-1/2 px-3 py-2 rounded-lg border border-[#444] bg-[#2a2a2a] text-white focus:outline-none text-sm"
                                 />
                             </div>
 
@@ -144,7 +155,7 @@ const Explore = () => {
                                     onChange={(e) => setTag(e.target.value)}
                                     className="w-1/2 px-3 py-2 rounded-lg border border-[#444] bg-[#2a2a2a] text-white text-sm"
                                 >
-                                    {/* <option value="">Select Tag</option> */}
+                                    <option value="">Category</option>
                                     {addDropdownOptions.map((option, index) => (
                                         <option key={index} value={option}>{option}</option>
                                     ))}
@@ -153,8 +164,8 @@ const Explore = () => {
                                 <input
                                     type="date"
                                     required
-                                    value={lastContacted}
-                                    onChange={(e) => setLastContacted(e.target.value)}
+                                    value={transactionDate}
+                                    onChange={(e) => setTransactionDate(e.target.value)}
                                     className="w-1/2 px-3 py-2 rounded-lg border border-[#444] bg-[#2a2a2a] text-white focus:outline-none text-sm"
                                 />
                             </div>
@@ -183,7 +194,7 @@ const Explore = () => {
             <div className='flex z-0 items-center gap-3 h-screen w-screen bg-zinc-900 px-5'>
                 {isNavOpen ? <Sidebar /> : ''}
 
-                <section className={`bg-[#09090b] rounded-lg h-[95vh] transition-all duration-300 w-full ${isNavOpen ? '' : 'w-screen'}`}>
+                <section className={`bg-[#09090b] rounded-lg h-[95vh] transition-all absolute right-4 duration-500 ${isNavOpen ? 'w-[82vw]' : 'w-[98vw]'}`}>
                     {/* Top Header */}
                     <div className='h-12 px-5 flex items-center w-full border-b-2 border-zinc-900'>
                         <div value='isNavOpen' className='cursor-pointer' onClick={() => setIsNavOpen(!isNavOpen)}>
@@ -229,15 +240,15 @@ const Explore = () => {
                     <section>
                         <div className='flex items-center text-white mx-7 px-3 py-2 mb-5 border bg-zinc-800 rounded-lg border-[#a1a1aa]'>
                             <ShieldAlert />
-                            NOTE :
+                            <p className='pl-2'>NOTE :</p>
                             <p className='px-2'>You can add temporary credentials to verify the dynamic working of the product, but don't forget to remove once the verified!</p>
                         </div>
                     </section>
 
                     {/* Profile Cards */}
-                    <section className='h-[70%] overflow-auto'>
-                        <div className='grid sm:grid-cols-2 md:grid-cols-3 overflow-auto gap-3 px-5'>
-                            <ProfileCard addNew={added}/>
+                    <section className='h-[73%] overflow-auto'>
+                        <div className='grid sm:grid-cols-2 md:grid-cols-4 overflow-auto gap-3 px-5'>
+                            <ExploreCard addNew={added} />
                         </div>
                     </section>
                 </section>

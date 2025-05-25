@@ -47,7 +47,7 @@ export default function Sidebar() {
     }, []);
 
     return (
-        <div className="w-64 h-screen bg-[#18181b] text-white flex flex-col justify-between py-5">
+        <div className="w-[15vw] h-screen bg-[#18181b] text-white flex flex-col justify-between py-5">
             <div>
                 {/* Header */}
                 <div className="mb-6">
@@ -82,7 +82,7 @@ export default function Sidebar() {
 
                 {/* Projects Section */}
                 <div className="mt-6">
-                    <div className="text-xs uppercase text-gray-400 mb-2">More Features (Under Dev)</div>
+                    <div className="text-xs uppercase text-gray-400 mb-2">Features (Under Dev)</div>
                     <div className="space-y-1">
                         <button
                             onClick={() => setPlatformOpen(!platformOpen)}

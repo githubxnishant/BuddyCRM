@@ -10,19 +10,19 @@ const cardSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    company: {
+    transactionType: {
         type: String,
         required: true,
     },
-    designation: {
-        type: String,
+    transactionAmount: {
+        type: Number,
         required: true,
     },
     tag: {
         type: String,
         required: true,
     },
-    lastContacted: {
+    transactionDate: {
         type: Date,
         required: true,
     },

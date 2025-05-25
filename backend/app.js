@@ -24,7 +24,7 @@ app.use("/", userRouter);
 app.use("/", cardRouter);
 
 app.get("/", (req, res) => {
-    res.send("Server is working...");
+    res.send("BuddyCRM server is working...");
 })
 
 export default app;
