@@ -51,13 +51,15 @@ export default function Sidebar() {
             <div>
                 {/* Header */}
                 <div className="mb-6">
-                    <div className="flex items-center gap-3">
-                        <div className=" flex justify-center items-start scale-200">⌘</div>
-                        {/* <div className="bg-blue-600 flex justify-center h-8 w-8 rounded-md text-white font-bold text-xl">⌘</div> */}
-                        <div>
-                            <p className=" flex justify-center items-center text-lg font-semibold">BuddyCRM</p>
+                    <Link to={'/'}>
+                        <div className="flex items-center gap-3">
+                            <div className=" flex justify-center items-start scale-200">⌘</div>
+                            {/* <div className="bg-blue-600 flex justify-center h-8 w-8 rounded-md text-white font-bold text-xl">⌘</div> */}
+                            <div>
+                                <p className=" flex justify-center items-center text-lg font-semibold">BuddyCRM</p>
+                            </div>
                         </div>
-                    </div>
+                    </Link>
                 </div>
 
                 {/* Platform Section */}

@@ -32,7 +32,9 @@ export default function AuthForm() {
         <div className="min-h-screen bg-[#1e1e1e] flex items-center justify-center px-4">
             <div className="bg-[#111] text-white w-full max-w-md p-8 rounded-lg shadow-lg">
                 <div className="text-center mb-6">
-                    <div className="text-sm text-gray-400">⌘ BuddyCRM</div>
+                    <Link to={'/'}>
+                        <div className="text-sm text-gray-400">⌘ BuddyCRM</div>
+                    </Link>
                     <h2 className="text-2xl font-semibold mt-3">Welcome back</h2>
                     <p className="text-sm text-gray-400">Login with your Google account</p>
                 </div>

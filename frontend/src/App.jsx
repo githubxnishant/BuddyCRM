@@ -5,6 +5,7 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import ProtectedRoute from './context/ProtectedRoute';
 import Interactions from './pages/Interactions';
+import Homepage from './pages/Homepage';
 
 function App() {
 
@@ -14,8 +15,8 @@ function App() {
         <Routes>
           <Route path='/signup' element={<Signup />} />
           <Route path='/login' element={<Login />} />
-          <Route path="/" element={<Navigate to="/dashboard" />} />
-          <Route path='*' element={<Navigate to='/dashboard' />} />
+          <Route path='*' element={<Navigate to='/' />} />
+          <Route path="/" element={<Homepage />} />
           <Route element={<ProtectedRoute />}>
             <Route path='/dashboard' element={<Dashboard />} />
           </Route>
