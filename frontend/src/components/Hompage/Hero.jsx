@@ -45,11 +45,11 @@ const Hero = () => {
                 >
                     <h1 className="text-5xl md:text-[75px] font-medium leading-tight mb-4">
                         Revoluzioned <br />
-                        Customer <br />
-                        Relationship
+                        AI-Powered <br />
+                        Finance CRM
                     </h1>
                     <p className="text-gray-500 text-base sm:text-lg mb-6">
-                        Streamline Operations, Boost Efficiency, and Drive Growth
+                        Organize Transactions, Boost Efficiency, and Manage Records!
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center z-10 lg:justify-start">
@@ -75,8 +75,8 @@ const Hero = () => {
                             </motion.button></a>
                     </div>
 
-                    <p className="text-sm text-gray-500 mt-4">
-                        Used and helping over <span className="font-semibold text-black">150+ Users</span> <span className="ml-1">🔍</span>
+                    <p className="text-md text-gray-500 mt-4">
+                        Used and tested by <span className="font-semibold text-black"> 150+ users </span> <span className="text-lg">🤝</span>
                     </p>
                 </motion.div>
 
@@ -88,7 +88,7 @@ const Hero = () => {
                     className="hidden md:block w-[100vw] z-10"
                 >
                     <img
-                        src=".\src\assets\image.png"
+                        src="/Images/image.png"
                         alt="Dashboard Preview"
                         className=" h-[70vh] rounded-md shadow-sm"
                     />
