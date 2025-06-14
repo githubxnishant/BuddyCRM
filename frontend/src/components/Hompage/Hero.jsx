@@ -4,14 +4,14 @@ import { Link } from 'react-router-dom';
 
 const Hero = () => {
     return (
-        <section className="md:px-16 py-12 md:h-[80vh] bg-white overflow-hidden">
-            <div className="grid h-full md:grid-cols-2 lg:flex-row items-center justify-between gap-12">
+        <section className="md:px-16 py-12 md:h-[80vh] bg-white">
+            <div className="grid grid-rows-2 md:grid-cols-2 lg:flex-row items-center justify-between gap-12 max-w-screen">
                 {/* SVG Pattern Background */}
                 <motion.div
                     initial={{ opacity: 0, scale: 1.05 }}
                     animate={{ opacity: 1, scale: 1.05 }}
                     transition={{ duration: 2, ease: 'easeOut' }}
-                    className="absolute md:w-full w-[300vw] h-screen left-0 top-3 z-0 overflow-hidden">
+                    className="absolute md:w-full min-h-screen left-0 object-cover max-w-screen top-3 z-0 overflow-hidden">
                     <svg
                         viewBox="0 0 1440 680"
                         fill="none"
@@ -52,7 +52,7 @@ const Hero = () => {
                         Organize Transactions, Boost Efficiency, and Manage Records!
                     </p>
 
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center z-10 lg:justify-start">
+                    <div className="flex flex-row gap-4 justify-center items-center z-10 lg:justify-start">
                         <Link to={'/dashboard'}>
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
@@ -72,7 +72,8 @@ const Hero = () => {
                                     <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8" />
                                 </svg>
                                 Docs
-                            </motion.button></a>
+                            </motion.button>
+                        </a>
                     </div>
 
                     <p className="text-md text-gray-500 mt-4">
@@ -85,12 +86,12 @@ const Hero = () => {
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8, ease: 'easeOut' }}
-                    className="hidden md:block w-[100vw] z-10"
+                    className="md:block h-full md:w-[100vw] max-w-screen overflow-hidden z-10"
                 >
                     <img
                         src="/Images/image.png"
                         alt="Dashboard Preview"
-                        className=" h-[70vh] rounded-md shadow-sm"
+                        className="md:h-[70vh] ml-60 mt-20 md:m-0 md:scale-100 scale-200 rounded-md shadow-sm"
                     />
                 </motion.div>
             </div>

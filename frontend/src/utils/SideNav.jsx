@@ -100,7 +100,7 @@ export default function Sidebar() {
                         {platformOpen && (
                             <div className="ml-6 space-y-1 transition-all duration-500 border-l px-2">
                                 <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">History</div>
-                                <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">Starred</div>
+                                <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">Priority</div>
                                 <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">Settings</div>
                             </div>
                         )}
@@ -152,6 +152,11 @@ export default function Sidebar() {
                         <ChevronDown size={16} className="text-gray-400 cursor-not-allowed" />
                     </div>
                 </div>
+                <p className='w-full flex justify-center mt-3 text-xs z-20'>Crafted with ❤️ by
+                    <span className='pl-1 cursor-pointer font-medium'>
+                        <a href='https://linktr.ee/nishant.chauhan' target='_blank'>Nishant</a>
+                    </span>
+                </p>
             </div>
         </div>
     );

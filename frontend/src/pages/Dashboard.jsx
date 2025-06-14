@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Sidebar from '../components/SideNav';
+import Sidebar from '../utils/SideNav';
 import axios from 'axios';
-import DashboardStatCard from '../components/DashboardStatCard';
-import MiniCard from '../components/DashbordProfileCard';
+import DashboardStatCard from '../components/Dashboard/StatCard';
+import MiniCard from '../components/Dashboard/ProfileCard';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
@@ -39,7 +39,6 @@ const Dashboard = () => {
     }, []);
 
     useEffect(() => {
-        console.log(userCard);
         const totalOwe = userCard
             .filter(txn => txn.transactionType === "Owe (To Pay)")
             .reduce((sum, txn) => sum + txn.transactionAmount, 0);
@@ -80,7 +79,7 @@ const Dashboard = () => {
         <>
             <div className='flex items-center gap-3 h-screen w-screen bg-zinc-900 px-5'>
                 {isNavOpen ? <Sidebar /> : ''}
-                <section className={`bg-[#09090b] rounded-lg h-[95vh] transition-all absolute right-4 duration-500 ${isNavOpen ? 'w-[80vw]' : 'w-[98vw]'}`}>
+                <section className={`bg-[#09090b] rounded-lg h-[95vh] transition-all absolute right-4 duration-500 ${isNavOpen ? 'w-[82vw]' : 'w-[98vw]'}`}>
                     {/* Top Header */}
                     <div className='h-12 px-5 flex items-center w-full border-b-2 border-zinc-900'>
                         <div value='isNavOpen' className='cursor-pointer' onClick={() => setIsNavOpen(!isNavOpen)}>
