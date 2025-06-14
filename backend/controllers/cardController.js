@@ -54,19 +54,63 @@ export const getAllCards = async (req, res) => {
 
 export const deleteCard = async (req, res) => {
     try {
-        const { id } = req.params;
-        const card = await cardModel.deleteOne({ id, requestedBy: req.user._id });
-        if (!card) {
-            return res.staus(500).json({
-                success: false, 
-                message: "Error deleting card from server side"
-            })
+        const { id } = req.params; // ✅ from params
+        const result = await cardModel.deleteOne({ _id: id, requestedBy: req.user._id }); // ✅ use _id not id
+
+        if (result.deletedCount === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "No card found or unauthorized",
+            });
         }
+
+        return res.status(200).json({
+            success: true,
+            message: "Card deleted successfully",
+        });
     } catch (error) {
+        console.error("Delete card error:", error);
         res.status(500).json({
             success: false,
             message: "Server error in deleting the card!",
-            error,
-        })
+        });
     }
-}
+};
+
+export const updateCard = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const {
+            name,
+            email,
+            transactionType,
+            transactionAmount,
+            tag,
+            transactionDate,
+            notes,
+        } = req.body;
+
+        const updatedCard = await cardModel.findByIdAndUpdate(
+            id,
+            {
+                name,
+                email,
+                transactionType,
+                transactionAmount,
+                tag,
+                transactionDate,
+                notes,
+            },
+            { new: true } // returns updated document
+        );
+
+        if (!updatedCard) {
+            return res.status(404).json({ message: 'Card not found' });
+        }
+
+        res.status(200).json(updatedCard);
+    } catch (err) {
+        console.error("Update error:", err);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
