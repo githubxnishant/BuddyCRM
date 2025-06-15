@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../utils/SideNav';
 import axios from 'axios';
 import DashboardStatCard from '../components/Dashboard/StatCard';
-import MiniCard from '../components/Dashboard/ProfileCard';
+import MiniCards from '../components/Dashboard/ProfileCard';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
@@ -20,6 +20,14 @@ const Dashboard = () => {
         localStorage.removeItem("authToken");
         navigate("/login");
     };
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia("(min-width: 768px");
+        const handleResize = () => setIsNavOpen(mediaQuery.matches);
+        handleResize();
+        mediaQuery.addEventListener('change', handleResize);
+        return () => mediaQuery.removeEventListener('change', handleResize);
+    }, []);
 
     useEffect(() => {
         const getUsers = async () => {
@@ -75,11 +83,13 @@ const Dashboard = () => {
         fetchUser();
     }, []);
 
+    const toggle = isNavOpen;
+
     return (
         <>
-            <div className='flex items-center gap-3 h-screen w-screen bg-zinc-900 px-5'>
+            <div className='flex items-center gap-3 h-screen w-screen bg-zinc-900 md:px-4'>
                 {isNavOpen ? <Sidebar /> : ''}
-                <section className={`bg-[#09090b] rounded-lg h-[95vh] transition-all absolute right-4 duration-500 ${isNavOpen ? 'w-[82vw]' : 'w-[98vw]'}`}>
+                <section className={`bg-[#09090b] md:rounded-lg h-screen md:h-[95vh] transition-all md:absolute md:right-4 overflow-scroll duration-500 ${toggle ? 'md:w-[82vw] w-20' : 'md:w-[98vw]'}`}>
                     {/* Top Header */}
                     <div className='h-12 px-5 flex items-center w-full border-b-2 border-zinc-900'>
                         <div value='isNavOpen' className='cursor-pointer' onClick={() => setIsNavOpen(!isNavOpen)}>
@@ -92,28 +102,28 @@ const Dashboard = () => {
                     </div>
 
                     {/* Greeting div */}
-                    <div className='mx-7 mt-2 pt-2 px-3'>
+                    <div className='md:mx-7 mx-5 mt-2 pt-2 md:px-3'>
                         <p className='text-white text-lg  flex justify-between'>Welcome 👋
-                            <button onClick={handleLogout} className='bg-white flex text-sm justify-center items-center gap-2 cursor-pointer text-black px-4 py-2 rounded-md hover:bg-zinc-200 transition'>Logout</button>
+                            <button onClick={handleLogout} className='bg-white flex text-sm justify-center items-center gap-2 cursor-pointer text-black md:px-4 px-2 py-1 md:py-2 rounded-md hover:bg-zinc-200 transition'>Logout</button>
                         </p>
-                        <h1 className='text-white text-4xl'>{userName}</h1>
+                        <h1 className='text-white text-2xl md:text-4xl'>{userName}</h1>
                     </div>
                     {/* Stats Card */}
-                    <section className='flex px-5'>
+                    <section className='md:flex grid grid-rows-2 grid-cols-2 px-5 md:py-0 py-3 overflow-scroll gap-3 md:gap-0 md:my-0 my-5'>
                         <DashboardStatCard heading={"Connections"} stats={`${connectionLength}+`} subheading={"Connected till now"} />
                         <DashboardStatCard heading={"Owe Amount"} stats={`₹ ${oweAmount}`} subheading={"Have to be paid"} />
                         <DashboardStatCard heading={"Lend Amount"} stats={`₹ ${lendAmount}`} subheading={"Have to be collected"} />
                         <DashboardStatCard heading={"Interactions"} stats={"0+"} subheading={"Interacted till now"} />
                     </section>
 
-                    <section className='px-7 flex items-center w-full'>
+                    <section className='md:px-7 px-5 mb-5 md:mb-7 flex items-center w-full'>
                         <div className='flex py-3 flex-col items-center h-full w-full border-2 rounded-lg border-[#27272a]'>
-                            <p className='text-white w-full text-left px-7 pb-4 my-1 text-2xl flex justify-between'>Recent Transactions!
-                                <Link to={"/explore"}><button className="bg-white text-base w-auto flex justify-center items-center gap-2 cursor-pointer text-black px-5 py-1 rounded-md hover:bg-zinc-200 transition">View All</button></Link>
+                            <p className='text-white w-full text-left px-7 pb-4 my-1 md:text-2xl text-lg flex justify-between'>Recent Transactions!
+                                <Link to={"/explore"}><button className="bg-white md:text-base text-sm w-auto flex justify-center items-center gap-2 cursor-pointer text-black md:px-5 px-2 py-1 rounded-md hover:bg-zinc-200 transition">View All</button></Link>
                             </p>
                             <div className='w-full px-5'>
                                 <div className='border-white flex items-center gap-3 overflow-auto justify-start'>
-                                    <MiniCard />
+                                    <MiniCards />
                                 </div>
                             </div>
                         </div>

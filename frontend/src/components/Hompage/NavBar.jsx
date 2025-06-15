@@ -79,7 +79,7 @@ const Navbar = () => {
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.25 }}
+                        transition={{ duration: 0.3}}
                         className="md:hidden mt-4 space-y-2 text-sm font-medium text-gray-700"
                     >
                         {/* <a href="#" className="block hover:text-black">About</a>

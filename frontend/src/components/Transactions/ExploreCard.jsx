@@ -13,6 +13,7 @@ import {
     HandCoins,
 } from "lucide-react";
 import AddCard from "./AddCard";
+import { toast } from "react-toastify";
 
 export default function ProfileCard({ addNew, setAddNew, added, setAdded }) {
     const [cards, setCards] = useState([]);
@@ -56,12 +57,15 @@ export default function ProfileCard({ addNew, setAddNew, added, setAdded }) {
             );
             if (res.status === 200) {
                 setActiveEditCard(null);
-                fetchCards(); // ✅ re-fetch after successful delete
+                fetchCards(); 
+                toast.success("Card deleted successfully!")
             } else {
                 console.error("Delete failed:", res);
+                toast.error("Unexpected error occured!");
             }
         } catch (err) {
             console.error("Error deleting card:", err);
+            toast.error("Unexpected error occured!");
         }
     };
 
@@ -103,7 +107,7 @@ export default function ProfileCard({ addNew, setAddNew, added, setAdded }) {
                     {cards.map((user) => (
                         <div
                             key={user._id}
-                            className="relative max-w-md w-full mx-2 bg-zinc-900 text-zinc-100 rounded-2xl shadow-lg p-6 space-y-5 border border-zinc-800"
+                            className="relative md:max-w-md md:w-full md:mx-2 bg-zinc-900 text-zinc-100 rounded-2xl shadow-lg p-6 space-y-5 border border-zinc-800"
                         >
                             {activeEditCard === user._id && (
                                 <div className="absolute z-50 top-18 w-[60%] right-6 bg-zinc-800 border border-zinc-700 rounded-md shadow-lg p-3 space-y-2">

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import Sidebar from '../utils/SideNav'
 import Dropdown from '../utils/Dropdown';
-import ExploreCard from '../components/Explore/ExploreCard';
+import ExploreCard from '../components/Transactions/ExploreCard';
 import { Tag, User, StickyNote, House, Calendar, Edit, Save, Mail, Cross, EyeClosed, X, ShieldAlert } from "lucide-react";
 import axios from 'axios';
-import AddCard from '../components/Explore/AddCard';
+import AddCard from '../components/Transactions/AddCard';
 
-const Explore = () => {
+const Transactions = () => {
 
     const [isNavOpen, setIsNavOpen] = useState(true);
     const [profileCard, setProfileCard] = useState('');
@@ -27,14 +27,18 @@ const Explore = () => {
 
     const handleSearch = () => { }
 
+    useEffect(() => {
+        const mediaQuery = window.matchMedia("(min-width: 768px");
+        const handleResize = () => setIsNavOpen(mediaQuery.matches);
+        handleResize();
+        mediaQuery.addEventListener('change', handleResize);
+        return () => mediaQuery.removeEventListener('change', handleResize);
+    }, []);
+
+    const toggle = !isNavOpen;
+
     return (
         <>
-            {/* <AddCard
-                addNew={addNew}
-                setAddNew={setAddNew}
-                added={added}
-                setAdded={setAdded}
-            /> */}
 
             <AddCard
                 addNew={addNew}
@@ -43,14 +47,12 @@ const Explore = () => {
                 setAdded={setAdded}
                 onClose={() => {
                     setAddNew(false);
-                    
                 }}
             />
 
-            <div className='flex z-0 items-center gap-3 h-screen w-screen bg-zinc-900 px-5'>
+            <div className='flex z-0 items-center gap-3 h-screen w-screen bg-zinc-900 md:px-4'>
                 {isNavOpen ? <Sidebar /> : ''}
-
-                <section className={`bg-[#09090b] rounded-lg h-[95vh] transition-all absolute right-4 duration-500 ${isNavOpen ? 'w-[82vw]' : 'w-[98vw]'}`}>
+                <section className={`bg-[#09090b] w-full md:rounded-lg h-screen md:h-[95vh] transition-all md:absolute md:right-4 overflow-scroll duration-500 ${isNavOpen ? 'md:w-[82vw] w-20' : 'md:w-[98vw]'}`}>
                     {/* Top Header */}
                     <div className='h-12 px-5 flex items-center w-full border-b-2 border-zinc-900'>
                         <div value='isNavOpen' className='cursor-pointer' onClick={() => setIsNavOpen(!isNavOpen)}>
@@ -59,33 +61,33 @@ const Explore = () => {
                             </svg>
                         </div>
                         <div className='mx-4 h-5 border-1 border-[#27272a]'></div>
-                        <p className='text-white'>Explore</p>
+                        <p className='text-white'>Transactions</p>
                     </div>
 
                     {/* Bottom Header */}
-                    <section className='flex justify-between items-center py-5 mx-7'>
-                        <div className="w-1/3 flex items-center gap-3 bg-[#0a0a0a] rounded-md">
+                    <section className='flex justify-between md:items-center flex-col md:flex-row md:gap-0 gap-3 py-5 mx-7'>
+                        <div className="w-auto flex justify-between items-center gap-3 bg-[#0a0a0a] rounded-md">
                             <input
                                 type="email"
                                 placeholder="mailxnishant@gmail.com"
                                 value={profileCard}
                                 onChange={(e) => setProfileCard(e.target.value)}
-                                className="bg-transparent text-white border border-zinc-700 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-500 w-68 placeholder:text-zinc-400"
+                                className="bg-transparent text-white border border-zinc-700 px-2 py-1 md:px-4 md:py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-500 w-52 md:w-68 placeholder:text-zinc-400"
                             />
                             <button
                                 onClick={handleSearch}
-                                className="bg-white cursor-pointer text-black px-4 py-2 rounded-md hover:bg-zinc-200 transition"
+                                className="bg-white cursor-pointer text-black px-4 py-2 md:text-base text-sm rounded-md hover:bg-zinc-200 transition"
                             >
                                 Search
                             </button>
                         </div>
 
-                        <div className='flex justify-center items-center gap-3'>
+                        <div className='flex md:w-auto md:justify-center justify-between items-center gap-3'>
                             <Dropdown categories={dropdownOptions} />
                             <button
                                 value={addNew}
                                 onClick={() => setAddNew(!addNew)}
-                                className="bg-white cursor-pointer text-black px-4 py-2 rounded-md hover:bg-zinc-200 transition"
+                                className="bg-white md:text-base text-sm cursor-pointer text-black px-2 md:px-4 py-2 rounded-md hover:bg-zinc-200 transition"
                             >
                                 Add New
                             </button>
@@ -94,16 +96,14 @@ const Explore = () => {
 
                     {/* NOTE Section */}
                     <section>
-                        <div className='flex items-center text-white mx-7 px-3 py-2 mb-5 border bg-zinc-800 rounded-lg border-[#a1a1aa]'>
-                            <ShieldAlert />
-                            <p className='pl-2'>NOTE :</p>
-                            <p className='px-2'>You can add temporary credentials to verify the dynamic working of the product, but don't forget to remove once the verified!</p>
-                        </div>
+                        <p className='flex md:items-center text-white mx-7 px-3 py-2 mb-5 border bg-zinc-800 rounded-lg border-[#a1a1aa]'>
+                            <span className='flex justify-center mt-1 mr-2'><ShieldAlert /></span><span>NOTE : You can add temporary credentials to verify the dynamic working of the product, but don't forget to remove once the verified!</span>
+                        </p>
                     </section>
 
                     {/* Profile Cards */}
                     <section className='h-[70%] overflow-auto'>
-                        <div className='grid sm:grid-cols-2 md:grid-cols-3 overflow-auto gap-5 px-5'>
+                        <div className='grid sm:grid-cols-2 md:grid-cols-3 overflow-auto gap-5 md:px-5 md:py-0 pb-5 md:mr-4 md:ml-0 mx-7'>
                             <ExploreCard addNew={added} />
                         </div>
                     </section>
@@ -138,4 +138,4 @@ function LabelInput({ icon, label, name, value, onChange, isEditing, type = "tex
     );
 }
 
-export default Explore;
+export default Transactions;

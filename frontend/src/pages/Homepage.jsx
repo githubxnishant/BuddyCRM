@@ -6,11 +6,11 @@ import Footer from '../components/Hompage/Footer'
 function App() {
 
     return (
-        <>
+        <div>
             <Navbar />
             <Hero />
             <Footer />
-        </>
+        </div>
     )
 }
 

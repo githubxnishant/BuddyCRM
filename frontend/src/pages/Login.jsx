@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { BadgeInfo, BadgeInfoIcon, Copy, Info, InfoIcon, LucideBadgeInfo, LucideInfo, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 export default function AuthForm() {
 
@@ -13,18 +14,33 @@ export default function AuthForm() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        const toastId = toast.loading("Loading...");
         try {
             const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, {
                 email: email,
                 password: password,
             });
             if (response.data.success) {
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                toast.update(toastId, {
+                    render: 'Redirecting to Dashboard!',
+                    type: 'success',
+                    isLoading: false,
+                    autoClose: 2000,
+                })
+                await new Promise(resolve => setTimeout(resolve, 2000));
                 localStorage.setItem("authToken", response.data.token);
                 navigate("/dashboard");
             }
         } catch (error) {
-            alert("Invalid Credentials!");
-            console.error("Login Failed", error.response?.data || error.message);  // Log the error from the response
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            toast.update(toastId, {
+                render: 'Invalid credentials',
+                type: 'error',
+                isLoading: false,
+                autoClose: 2000,
+            })
+            console.error("Login Failed", error.response?.data || error.message);
         }
     };
 
@@ -138,16 +154,18 @@ const DemoCredentials = () => {
 
     const copyToClipboard = (text) => {
         navigator.clipboard.writeText(text);
+        toast.info(`Copied ${text}`);
+        setShowInfo(!showInfo);
     };
 
     return (
         <>
-            <div onClick={(e) => setShowInfo(!showInfo)} className="fixed bg-[#111] bottom-5 right-5 cursor-pointer border p-2 rounded">
+            <div popoverTarget="popup" onClick={(e) => setShowInfo(!showInfo)} className="fixed bg-[#111] bottom-5 right-5 cursor-pointer border p-2 rounded">
                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#e5e7eb" viewBox="0 0 16 16">
                     <path d="m9.708 6.075-3.024.379-.108.502.595.108c.387.093.464.232.38.619l-.975 4.577c-.255 1.183.14 1.74 1.067 1.74.72 0 1.554-.332 1.933-.789l.116-.549c-.263.232-.65.325-.905.325-.363 0-.494-.255-.402-.704zm.091-2.755a1.32 1.32 0 1 1-2.64 0 1.32 1.32 0 0 1 2.64 0" />
                 </svg>
             </div>
-            {showInfo && <div className="bg-[#111] fixed right-5 bottom-20 transition-all duration-1000 text-white p-4 rounded shadow-md w-60 max-w-md mx-auto mt-4 space-y-4">
+            {showInfo && <div className="bg-[#111] fixed right-5 bottom-20 transition-all duration-1000 text-white p-4 rounded shadow-md w-60 max-w-md mx-auto mt-4 space-y-4" id="popup" popover>
                 <h2 className="text-lg font-semibold flex justify-between">Demo Credentials
                     <div className="cursor-pointer" onClick={(e) => { setShowInfo(!showInfo) }}><X /></div>
                 </h2>

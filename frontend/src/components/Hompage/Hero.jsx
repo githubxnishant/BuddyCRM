@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const Hero = () => {
     return (
         <section className="md:px-16 md:py-12 pt-12 md:h-[80vh] bg-white">
-            <div className="grid grid-rows-2 md:grid-cols-2 lg:flex-row items-center justify-between gap-10 md:gap-12 max-w-screen">
+            <div className="grid grid-rows-2 md:grid-rows-0 md:grid-cols-2 lg:flex-row items-center justify-between gap-10 md:gap-12 max-w-screen">
                 {/* SVG Pattern Background */}
                 <motion.div
                     initial={{ opacity: 0, scale: 1.05 }}
@@ -44,12 +44,12 @@ const Hero = () => {
                     className="text-center lg:text-left relative left-0 md:left-13 w-full z-10"
                 >
                     <h1 className="text-5xl md:text-[75px] font-medium leading-tight mb-4">
-                        Revoluzioned <br />
+                        Revolutionized <br />
                         AI-Powered <br />
                         Finance CRM
                     </h1>
                     <p className="text-gray-500 text-base sm:text-lg mb-6">
-                        Organize Transactions, Boost Efficiency, and Manage Records!
+                        Organize Transactions, Boost Efficiency <br /> and Manage Records!
                     </p>
 
                     <div className="flex flex-row gap-4 justify-center items-center z-10 lg:justify-start">

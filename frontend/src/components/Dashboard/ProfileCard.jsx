@@ -1,44 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Calendar, Mail, Tag, User, StickyNote, HandCoins, BadgeIndianRupee } from "lucide-react";
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const MiniCard = () => {
+const MiniCards = () => {
 
     const [userCard, setUserCard] = useState([]);
-
-    const client = {
-        name: "Aarav Sharma",
-        email: "aarav.sharma@example.com",
-        birthday: "1998-04-12",
-        anniversary: "2020-06-21",
-        tags: "VIP",
-        lastContacted: "2025-04-01",
-        notes: `Prefers weekend meetings.\nResponds quickly over email.\nInterested in premium offerings.`,
-    };
-
-    // useEffect(() => {
-    //     const getUsers = async () => {
-    //         const token = localStorage.getItem('authToken');
-    //         if (!token) {
-    //             console.error("No token found, please login.");
-    //             return;
-    //         }
-    //         try {
-    //             const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/card/get`, {
-    //                 headers: {
-    //                     Authorization: `Bearer ${token}`,
-    //                 },
-    //             });
-    //             setUserCard(response);
-    //         } catch (error) {
-    //             console.log("Error fetching users in Dashboard Profile Card section (mini card) :", error)
-    //         }
-    //     }
-
-    //     getUsers();
-    //     console.log(userCard)
-    // }, [])
 
     useEffect(() => {
         const getUsers = async () => {
@@ -63,7 +29,7 @@ const MiniCard = () => {
                     {userCard.slice(0, 5).map((card, index) => (
                         <div
                             key={index}
-                            className="min-w-80 mx-2 mb-3 bg-zinc-900 text-zinc-100 rounded-lg shadow-lg p-6 space-y-5 border border-zinc-800"
+                            className="md:min-w-80 min-w-65 mx-2 mb-3 bg-zinc-900 text-zinc-100 rounded-lg shadow-lg p-6 space-y-5 border border-zinc-800"
                         >
                             {/* Header */}
                             <div className="flex items-center gap-3">
@@ -74,9 +40,6 @@ const MiniCard = () => {
                                     <div>
                                         <h2 className="text-lg font-semibold">{card.name}</h2>
                                         <p className="text-sm text-zinc-400">{card.email}</p>
-                                    </div>
-                                    <div className="flex gap-2">
-                                        {/* Optional actions */}
                                     </div>
                                 </div>
                             </div>
@@ -115,15 +78,15 @@ const MiniCard = () => {
 function DetailItem({ icon, label, value }) {
     return (
         <div>
-            <div className="flex items-center gap-2 text-sm text-zinc-400 mb-2">
+            <div className="flex items-center gap-2 md:text-sm text-xs text-zinc-400 mb-2">
                 {icon}
                 <span>{label}</span>
             </div>
-            <p className="text-sm font-medium text-zinc-200 bg-zinc-800 px-2 py-1.5 rounded-md">
+            <p className="md:text-sm text-xs font-medium text-zinc-200 bg-zinc-800 px-2 py-1.5 rounded-md">
                 {value}
             </p>
         </div>
     );
 }
 
-export default MiniCard
+export default MiniCards

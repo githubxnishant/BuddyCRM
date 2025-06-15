@@ -47,7 +47,7 @@ export default function Sidebar() {
     }, []);
 
     return (
-        <div className="w-[15vw] h-screen bg-[#18181b] text-white flex flex-col justify-between py-5">
+        <div className="md:w-[15vw] w-[65vw] md:ml-0 ml-5 h-screen md:bg-[#18181b] text-white flex flex-col justify-between py-5 md:z-0 z-10r">
             <div>
                 {/* Header */}
                 <div className="mb-6">
@@ -74,18 +74,19 @@ export default function Sidebar() {
                 <Link to={'/explore'}><div onClick={() => setActiveTab("explore")} className={`flex transition-all duration-300 items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 ${window.location.href === "http://localhost:5173/explore" ? "bg-zinc-700" : ""} cursor-pointer`}>
                     <Users size={16} />
                     {/* <span>Explore</span> */}
-                    Explore
-                </div></Link>
-
-                <Link to={'/interactions'}><div onClick={() => setActiveTab("interactions")} className={`flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer duration-300 transition-all ${window.location.href === "http://localhost:5173/interactions" ? "bg-zinc-700" : ""}`}>
-                    <Send size={16} />
-                    <span>Interactions</span>
+                    Transactions
                 </div></Link>
 
                 {/* Projects Section */}
                 <div className="mt-6">
                     <div className="text-xs uppercase text-gray-400 mb-2">Features (Under Dev)</div>
                     <div className="space-y-1">
+                        <Link to={'/interactions'}>
+                            <div onClick={() => setActiveTab("interactions")} className={`flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer duration-300 transition-all ${window.location.href === "http://localhost:5173/interactions" ? "bg-zinc-700" : ""}`}>
+                                <Send size={16} />
+                                <span>Interactions</span>
+                            </div>
+                        </Link>
                         <button
                             onClick={() => setPlatformOpen(!platformOpen)}
                             className="flex items-center justify-between w-full text-sm px-2 py-1.5 rounded hover:bg-zinc-800"
@@ -99,8 +100,8 @@ export default function Sidebar() {
 
                         {platformOpen && (
                             <div className="ml-6 space-y-1 transition-all duration-500 border-l px-2">
-                                <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">History</div>
-                                <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">Priority</div>
+                                <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">Settlements</div>
+                                <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">Priorities</div>
                                 <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">Settings</div>
                             </div>
                         )}
@@ -136,18 +137,20 @@ export default function Sidebar() {
 
                 {/* User */}
                 <div className="flex items-center justify-between mt-2 bg-zinc-800 px-3 py-2 rounded-lg">
-                    <div className="flex items-center gap-2">
+                    <div className="flex w-full items-center justify-between gap-2">
                         {/* <img
                             src="https://github.com/shadcn.png"
                             alt="user"
                             className="w-7 h-7 rounded-full"
                         /> */}
-                        <div className="bg-indigo-600 text-white rounded-full w-7 h-7 flex items-center justify-center font-bold text-lg">
-                            {user.name?.charAt(0)}
-                        </div>
-                        <div>
-                            <p className="text-sm font-semibold">{user.name}</p>
-                            <p className="text-xs text-gray-400">{user.email}</p>
+                        <div className="flex gap-2 items-center justify-center">
+                            <div className="bg-indigo-600 text-white rounded-full w-7 h-7 flex items-center justify-center font-bold text-lg">
+                                {user.name?.charAt(0)}
+                            </div>
+                            <div>
+                                <p className="text-sm font-semibold">{user.name}</p>
+                                <p className="text-xs text-gray-400">{user.email}</p>
+                            </div>
                         </div>
                         <ChevronDown size={16} className="text-gray-400 cursor-not-allowed" />
                     </div>

@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import 'react-toastify/dist/ReactToastify.css';
 
 /* index.css or App.css */
 input[type="number"]::-webkit-inner-spin-button,
@@ -17,3 +18,9 @@ body {
         height: 0;
     }
 }
+
+@media (width >= 468px /* 768px */) {
+        body{
+            overflow: hidden;
+        }
+    }

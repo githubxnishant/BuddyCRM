@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const AddCard = ({ addNew, added, setAdded, editData, onClose, sendUpdateToExploreCard }) => {
     const [name, setName] = useState('');
@@ -12,7 +13,7 @@ const AddCard = ({ addNew, added, setAdded, editData, onClose, sendUpdateToExplo
     const [isUpdate, setIsUpdate] = useState(false);
 
     const addDropdownOptions = ["Friend", "Relatives", "Client", "VIP", "Others"];
-    const addTransactionOptions = ["Owe (To Pay)", "Lend (To Collect)"];
+    const addTransactionOptions = ["Owe (Pay)", "Lend (Collect)"];
 
     // Pre-fill form on edit
     useEffect(() => {
@@ -47,10 +48,12 @@ const AddCard = ({ addNew, added, setAdded, editData, onClose, sendUpdateToExplo
                 await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/card/update/${editData._id}`, payload, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
+                toast.success("Card updated successfully!")
             } else {
                 await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/card/add`, payload, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
+                toast.success("Card added successfully!")
             }
 
             // Clear form and close
@@ -66,9 +69,10 @@ const AddCard = ({ addNew, added, setAdded, editData, onClose, sendUpdateToExplo
             { editData && sendUpdateToExploreCard(prev => prev + 1); }
         } catch (error) {
             if (error.response?.status === 409) {
-                alert("User already exists!");
+                toast.warn("User already exists!");
             } else {
                 console.error("Error submitting card:", error);
+                toast.error("Unexpected error occured!");
             }
         }
     };
@@ -80,7 +84,7 @@ const AddCard = ({ addNew, added, setAdded, editData, onClose, sendUpdateToExplo
                     <div className="h-screen fixed inset-0 bg-black opacity-60 z-40"></div>
                     <div className="max-w-md fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-full mx-auto rounded-2xl bg-[#18181b] border border-[#333] text-white shadow-xl p-6 space-y-4">
                         <div className="flex justify-between items-center">
-                            <h2 className="text-xl font-semibold">{editData ? 'Edit Connection' : 'Add New Connection'}</h2>
+                            <h2 className="text-xl font-semibold">{editData ? 'Edit Connection' : 'Add Connection'}</h2>
                             <button
                                 onClick={onClose}
                                 className="border border-[#444] px-3 py-1 rounded text-sm hover:underline"

@@ -42,7 +42,7 @@ const Interactions = () => {
 
     return (
         <>
-            <div className='flex items-center gap-3 h-screen w-screen bg-zinc-900 px-5'>
+            <div className='flex items-center gap-3 h-screen w-screen bg-zinc-900 px-4'>
                 {isNavOpen ? <Sidebar /> : ''}
                 <section className={`bg-[#09090b] rounded-lg h-[95vh] transition-all absolute right-4 duration-500 ${isNavOpen ? 'w-[82vw]' : 'w-[98vw]'}`}>
                     {/* Top Header */}

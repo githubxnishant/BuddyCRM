@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 export default function AuthForm() {
 
@@ -11,18 +12,30 @@ export default function AuthForm() {
     const [password, setPassword] = useState('');
 
     const handleRegister = async (e) => {
+        const toastId = toast.loading("Loading...");
         try {
             e.preventDefault();
             const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/register`, { name, email, password });
-            if (!response) {
-                console.log("lkjhgf");
-                return
-            }
             const { token } = response.data;
             localStorage.setItem('authToken', token);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            toast.update(toastId, {
+                render: 'Register Successfully, please login!',
+                type: 'success',
+                isLoading: false,
+                autoClose: 2000,
+            })
+            await new Promise(resolve => setTimeout(resolve, 2000));
             navigate("/login");
         } catch (error) {
             console.error("Signup failed", error);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            toast.update(toastId, {
+                render: 'Signup failed!',
+                type: 'error',
+                isLoading: false,
+                autoClose: 2000,
+            })
         }
     }
 
