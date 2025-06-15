@@ -11,8 +11,9 @@ const Hero = () => {
                     initial={{ opacity: 0, scale: 1.05 }}
                     animate={{ opacity: 1, scale: 1.05 }}
                     transition={{ duration: 2, ease: 'easeOut' }}
-                    className="absolute md:w-full min-h-screen left-0 object-cover max-w-screen top-3 z-0 overflow-hidden">
+                    className="md:absolute fixed md:w-full min-h-screen md:left-0 md:object-cover md:max-w-screen md:top-3 md:pt-0 pt-44 left-0 z-0">
                     <svg
+                        className='md:scale-100 scale-300'
                         viewBox="0 0 1440 680"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
@@ -33,6 +34,12 @@ const Hero = () => {
                             stroke="#D8D8D8"
                             strokeDasharray="12 12"
                         />
+                        
+                        <path
+                            d="M572.721 M767.616 223.898L852.875 371.753L767.616 519.608H597.097L511.838 182.038H402.203L316.943 34.1829L402.203 -113.672L572.721 -113.672Z"
+                            stroke="#D8D8D8"
+                            strokeDasharray="12 12"
+                        />
                     </svg>
                 </motion.div>
 
@@ -49,7 +56,7 @@ const Hero = () => {
                         Finance CRM
                     </h1>
                     <p className="text-gray-500 text-base sm:text-lg mb-6">
-                        Organize Transactions, Boost Efficiency <br /> and Manage Records!
+                        Organize Transactions, Analyze Expenses <br /> and Manage Settlements!
                     </p>
 
                     <div className="flex flex-row gap-4 justify-center items-center z-10 lg:justify-start">
@@ -77,7 +84,7 @@ const Hero = () => {
                     </div>
 
                     <p className="text-md text-gray-500 mt-4">
-                        Used and tested by <span className="font-semibold text-black"> 150+ users </span> <span className="text-lg">🤝</span>
+                        Used and tested by <span className="font-semibold text-black"> 100+ users </span> <span className="text-lg">🤝</span>
                     </p>
                 </motion.div>
 
