@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 
 const Hero = () => {
     return (
-        <section className="md:px-16 py-12 md:h-[80vh] bg-white">
-            <div className="grid grid-rows-2 md:grid-cols-2 lg:flex-row items-center justify-between gap-12 max-w-screen">
+        <section className="md:px-16 md:py-12 pt-12 md:h-[80vh] bg-white">
+            <div className="grid grid-rows-2 md:grid-cols-2 lg:flex-row items-center justify-between gap-10 md:gap-12 max-w-screen">
                 {/* SVG Pattern Background */}
                 <motion.div
                     initial={{ opacity: 0, scale: 1.05 }}
@@ -91,7 +91,7 @@ const Hero = () => {
                     <img
                         src="/Images/image.png"
                         alt="Dashboard Preview"
-                        className="md:h-[70vh] ml-60 mt-20 md:m-0 md:scale-100 scale-200 rounded-md shadow-sm"
+                        className="md:h-[70vh] ml-60 mt-20 md:m-0 md:scale-100 scale-185 rounded-md shadow-sm"
                     />
                 </motion.div>
             </div>
