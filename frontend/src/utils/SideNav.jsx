@@ -12,6 +12,7 @@ import {
     MoreHorizontal,
     LifeBuoy,
     Send,
+    Settings,
 } from "lucide-react";
 
 export default function Sidebar() {
@@ -102,24 +103,24 @@ export default function Sidebar() {
                             <div className="ml-6 space-y-1 transition-all duration-500 border-l px-2">
                                 <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">Settlements</div>
                                 <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">Priorities</div>
-                                <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">Settings</div>
+                                <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">Visualize</div>
                             </div>
                         )}
-
-                        <div className="flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">
-                            <Briefcase size={16} />
-                            <span>Analytics</span>
-                        </div>
 
                         <div className="flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">
                             <BookOpen size={16} />
                             <span>Schedules</span>
                         </div>
-
+                        
                         <div className="flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">
+                            <Settings size={16} />
+                            <span>Settings</span>
+                        </div>
+
+                        {/* <div className="flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">
                             <MoreHorizontal size={16} />
                             <span>More</span>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

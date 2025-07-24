@@ -3,6 +3,7 @@ import axios from "axios";
 import { BadgeInfo, BadgeInfoIcon, Copy, Info, InfoIcon, LucideBadgeInfo, LucideInfo, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
+import { motion } from "framer-motion";
 
 export default function AuthForm() {
 
@@ -14,7 +15,7 @@ export default function AuthForm() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        const toastId = toast.loading("Loading...");
+        const toastId = toast.loading("Verifiying...");
         try {
             const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, {
                 email: email,
@@ -46,7 +47,11 @@ export default function AuthForm() {
 
     return (
         <div className="min-h-screen bg-[#1e1e1e] flex items-center justify-center px-4">
-            <div className="bg-[#111] text-white w-full max-w-md p-8 rounded-lg shadow-lg">
+            <motion.div
+                initial={{ opacity: 0, scale: 1.00, x: 0, y: -100 }}
+                animate={{ opacity: 1, scale: 1.00, x: 0, y: 0 }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
+                className="bg-[#111] text-white w-full max-w-md p-8 rounded-lg shadow-lg">
                 <div className="text-center mb-6">
                     <Link to={'/'}>
                         <div className="text-sm text-gray-400">⌘ BuddyCRM</div>
@@ -139,7 +144,7 @@ export default function AuthForm() {
                     </a>
                     .
                 </p> */}
-            </div>
+            </motion.div>
             <DemoCredentials />
         </div>
     );
@@ -160,12 +165,24 @@ const DemoCredentials = () => {
 
     return (
         <>
-            <div popoverTarget="popup" onClick={(e) => setShowInfo(!showInfo)} className="fixed bg-[#111] bottom-5 right-5 cursor-pointer border p-2 rounded">
+            <motion.div
+                initial={{ opacity: 0, scale: 1.00, x: 0, y: 100 }}
+                animate={{ opacity: 1, scale: 1.00, x: 0, y: 0 }}
+                transition={{ duration: 0.7, ease: 'easeOut' }}
+                popoverTarget="popup"
+                onClick={(e) => setShowInfo(!showInfo)}
+                className="fixed bg-[#111] bottom-5 right-5 cursor-pointer border p-2 rounded">
                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#e5e7eb" viewBox="0 0 16 16">
                     <path d="m9.708 6.075-3.024.379-.108.502.595.108c.387.093.464.232.38.619l-.975 4.577c-.255 1.183.14 1.74 1.067 1.74.72 0 1.554-.332 1.933-.789l.116-.549c-.263.232-.65.325-.905.325-.363 0-.494-.255-.402-.704zm.091-2.755a1.32 1.32 0 1 1-2.64 0 1.32 1.32 0 0 1 2.64 0" />
                 </svg>
-            </div>
-            {showInfo && <div className="bg-[#111] fixed right-5 bottom-20 transition-all duration-1000 text-white p-4 rounded shadow-md w-60 max-w-md mx-auto mt-4 space-y-4" id="popup" popover>
+            </motion.div>
+            {showInfo && <motion.div
+                initial={{ opacity: 0, scale: 1.00 }}
+                animate={{ opacity: 1, scale: 1.00 }}
+                transition={{ duration: 0.7, ease: 'easeOut' }}
+                className="bg-[#111] fixed right-5 bottom-20 transition-all duration-1000 text-white p-4 rounded shadow-md w-60 max-w-md mx-auto mt-4 space-y-4"
+                id="popup"
+                popover>
                 <h2 className="text-lg font-semibold flex justify-between">Demo Credentials
                     <div className="cursor-pointer" onClick={(e) => { setShowInfo(!showInfo) }}><X /></div>
                 </h2>
@@ -185,7 +202,7 @@ const DemoCredentials = () => {
                         onClick={() => copyToClipboard(demoPassword)}
                     />
                 </div>
-            </div>}
+            </motion.div>}
         </>
     );
 };
