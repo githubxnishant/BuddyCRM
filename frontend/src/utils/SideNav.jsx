@@ -7,9 +7,6 @@ import {
     LayoutDashboard,
     BookOpen,
     Users,
-    Briefcase,
-    Globe,
-    MoreHorizontal,
     LifeBuoy,
     Send,
     Settings,
@@ -67,12 +64,12 @@ export default function Sidebar() {
                 <div className="text-xs uppercase w-full flex justify-start px-2 text-gray-400 mb-2">Quick Nav</div>
 
 
-                <Link to={'/dashboard'}><div onClick={() => setActiveTab("dashboard")} className={`flex transition-all duration-300 items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 ${window.location.href === "http://localhost:5173/dashboard" ? "bg-zinc-700" : ""} cursor-pointer`}>
+                <Link to={'/dashboard'}><div onClick={() => setActiveTab("dashboard")} className={`flex transition-all duration-300 items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 ${window.location.href === `${import.meta.env.VITE_FRONTEND_URL}/dashboard` ? "bg-zinc-700" : ""} cursor-pointer`}>
                     <LayoutDashboard size={16} />
                     Dashboard
                 </div></Link>
 
-                <Link to={'/explore'}><div onClick={() => setActiveTab("explore")} className={`flex transition-all duration-300 items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 ${window.location.href === "http://localhost:5173/explore" ? "bg-zinc-700" : ""} cursor-pointer`}>
+                <Link to={'/transactions'}><div onClick={() => setActiveTab("explore")} className={`flex transition-all duration-300 items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 ${window.location.href === `${import.meta.env.VITE_FRONTEND_URL}/transactions` ? "bg-zinc-700" : ""} cursor-pointer`}>
                     <Users size={16} />
                     {/* <span>Explore</span> */}
                     Transactions
@@ -83,7 +80,7 @@ export default function Sidebar() {
                     <div className="text-xs uppercase text-gray-400 mb-2">Features (Under Dev)</div>
                     <div className="space-y-1">
                         <Link to={'/interactions'}>
-                            <div onClick={() => setActiveTab("interactions")} className={`flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer duration-300 transition-all ${window.location.href === "http://localhost:5173/interactions" ? "bg-zinc-700" : ""}`}>
+                            <div onClick={() => setActiveTab("interactions")} className={`flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer duration-300 transition-all ${window.location.href === `${import.meta.env.VITE_FRONTEND_URL}/interactions` ? "bg-zinc-700" : ""}`}>
                                 <Send size={16} />
                                 <span>Interactions</span>
                             </div>

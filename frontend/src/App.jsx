@@ -1,6 +1,6 @@
 import Dashboard from './pages/Dashboard'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import Explore from './pages/Transactions';
+import Transactions from './pages/Transactions';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import ProtectedRoute from './context/ProtectedRoute';
@@ -22,7 +22,7 @@ function App() {
             <Route path='/dashboard' element={<Dashboard />} />
           </Route>
           <Route element={<ProtectedRoute />}>
-            <Route path='/explore' element={<Explore />} />
+            <Route path='/transactions' element={<Transactions />} />
           </Route>
           <Route element={<ProtectedRoute />}>
             <Route path='/interactions' element={<Interactions />} />

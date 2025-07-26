@@ -97,7 +97,7 @@ const Transactions = () => {
                     {/* NOTE Section */}
                     <section>
                         <p className='flex md:items-center text-white mx-7 px-3 py-2 mb-5 border bg-zinc-800 rounded-lg border-[#a1a1aa]'>
-                            <span className='flex justify-center mt-1 mr-2'><ShieldAlert /></span><span>NOTE : You can add temporary credentials to verify the dynamic working of the product, but don't forget to remove once the verified!</span>
+                            <span className='flex justify-center mt-1 mr-2'><ShieldAlert /></span><span>NOTE : You can add temporary credentials to verify the dynamic working of the product, but don't forget to remove performing the operations!</span>
                         </p>
                     </section>
 
