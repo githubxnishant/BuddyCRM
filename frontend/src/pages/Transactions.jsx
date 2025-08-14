@@ -34,31 +34,6 @@ const Transactions = () => {
         return () => mediaQuery.removeEventListener('change', handleResize);
     }, []);
 
-    useEffect(() => {
-        if (!query) {
-            setResults([]);
-            return;
-        }
-        const debounceTimeout = setTimeout(() => {
-            const fetchData = async () => {
-                setLoading(true);
-                setError(null);
-                try {
-                    const response = await axios.get(
-                        `https://api.example.com/search?q=${encodeURIComponent(query)}`
-                    );
-                    setResults(response.data.results); // adjust depending on API response
-                } catch (err) {
-                    setError(err.message || "Something went wrong");
-                } finally {
-                    setLoading(false);
-                }
-            };
-            fetchData();
-        }, 500);
-        return () => clearTimeout(debounceTimeout);
-    }, [query]);
-
     return (
         <>
             <AddCard
@@ -90,7 +65,7 @@ const Transactions = () => {
                             <input
                                 type="email"
                                 placeholder="mailxnishant@gmail.com"
-                                value={profileCard}
+                                value={searchQuery}
                                 onChange={(e) => setProfileCard(e.target.value)}
                                 className="bg-transparent text-white border border-zinc-700 px-2 py-1 md:px-4 md:py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-500 w-52 md:w-68 placeholder:text-zinc-400"
                             />

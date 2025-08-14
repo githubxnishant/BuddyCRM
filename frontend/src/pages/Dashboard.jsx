@@ -52,9 +52,11 @@ const Dashboard = () => {
         setStatLoading(true);
         const totalOwe = userCard
             .filter(txn => txn.transactionType === "Owe (Pay)")
+            .filter(txn => txn.transactionType === "Owe (Pay)")
             .reduce((sum, txn) => sum + txn.transactionAmount, 0);
         setOweAmount(totalOwe);
         const totalLend = userCard
+            .filter(txn => txn.transactionType === "Lend (Collect)")
             .filter(txn => txn.transactionType === "Lend (Collect)")
             .reduce((sum, txn) => sum + txn.transactionAmount, 0);
         setLendAmount(totalLend);
