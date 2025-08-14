@@ -13,6 +13,8 @@ const Dashboard = () => {
     const [connectionLength, setConnectionLength] = useState('');
     const [oweAmount, setOweAmount] = useState('');
     const [lendAmount, setLendAmount] = useState('');
+    const [statLoading, setStatLoading] = useState(false);
+    const [userLoading, setUserLoading] = useState(false);
     const navigate = useNavigate();
 
     //Logout Function
@@ -47,39 +49,43 @@ const Dashboard = () => {
     }, []);
 
     useEffect(() => {
+        setStatLoading(true);
         const totalOwe = userCard
-            .filter(txn => txn.transactionType === "Owe (To Pay)")
+            .filter(txn => txn.transactionType === "Owe (Pay)")
             .reduce((sum, txn) => sum + txn.transactionAmount, 0);
         setOweAmount(totalOwe);
-
         const totalLend = userCard
-            .filter(txn => txn.transactionType === "Lend (To Collect)")
+            .filter(txn => txn.transactionType === "Lend (Collect)")
             .reduce((sum, txn) => sum + txn.transactionAmount, 0);
         setLendAmount(totalLend);
+        setTimeout(() => {
+            setStatLoading(false);
+        }, 1000);
     }, [userCard])
 
     useEffect(() => {
         const fetchUser = async () => {
+            setUserLoading(true);
             const token = localStorage.getItem("authToken");
-
             if (!token) {
                 navigate("/login");
                 return;
             }
-
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/fetch/user`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
-
                 setUserName(response.data.user.name);
             } catch (error) {
                 console.error("Error fetching user:", error);
                 localStorage.removeItem("authToken");
                 navigate("/login");
+            } finally {
+                setTimeout(() => {
+                    setUserLoading(false);
+                }, 1000);
             }
         };
-
         fetchUser();
     }, []);
 
@@ -106,20 +112,34 @@ const Dashboard = () => {
                         <p className='text-white text-lg  flex justify-between'>Welcome 👋
                             <button onClick={handleLogout} className='bg-white flex text-sm justify-center items-center gap-2 cursor-pointer text-black md:px-4 px-2 py-1 md:py-2 rounded-md hover:bg-zinc-200 transition'>Logout</button>
                         </p>
-                        <h1 className='text-white text-2xl md:text-4xl'>{userName}</h1>
+                        {!userLoading
+                            ? <h1 className='text-white text-2xl md:text-4xl'>{userName}</h1>
+                            : <div className='h-12 w-60 animate-pulse bg-zinc-800 rounded'></div>
+                        }
                     </div>
                     {/* Stats Card */}
                     <section className='md:flex grid grid-rows-2 grid-cols-2 px-5 md:py-0 py-3 overflow-scroll gap-3 md:gap-0 md:my-0 my-5'>
-                        <DashboardStatCard heading={"Connections"} stats={`${connectionLength}+`} subheading={"Connected till now"} />
-                        <DashboardStatCard heading={"Owe Amount"} stats={`₹ ${oweAmount}`} subheading={"Have to be paid"} />
-                        <DashboardStatCard heading={"Lend Amount"} stats={`₹ ${lendAmount}`} subheading={"Have to be collected"} />
-                        <DashboardStatCard heading={"Interactions"} stats={"0+"} subheading={"Interacted till now"} />
+                        {!statLoading
+                            ? <>
+                                <DashboardStatCard heading={"Connections"} stats={`${connectionLength}+`} subheading={"Connected till now"} />
+                                <DashboardStatCard heading={"Owe Amount"} stats={`₹ ${oweAmount}`} subheading={"Have to be paid"} />
+                                <DashboardStatCard heading={"Lend Amount"} stats={`₹ ${lendAmount}`} subheading={"Have to be collected"} />
+                                <DashboardStatCard heading={"Interactions"} stats={"0+"} subheading={"Interacted till now"} />
+                            </>
+                            : Array.from({ length: 4 }, (_, index) => (
+                                <div className='md:w-1/4 w-full md:h-auto h-auto border-2 px-5 py-3 border-[#27272a] rounded-lg md:my-6 md:mx-2'>
+                                    <div className='h-8 m-2 w-32 bg-zinc-800 rounded animate-pulse'></div>
+                                    <div className='h-12 m-2 w-12 bg-zinc-800 rounded animate-pulse'></div>
+                                    <div className='h-5 m-2 w-36 bg-zinc-800 rounded animate-pulse'></div>
+                                </div>
+                            ))
+                        }
                     </section>
 
                     <section className='md:px-7 px-5 mb-5 md:mb-7 flex items-center w-full'>
                         <div className='flex py-3 flex-col items-center h-full w-full border-2 rounded-lg border-[#27272a]'>
-                            <p className='text-white w-full text-left px-7 pb-4 my-1 md:text-2xl text-lg flex justify-between'>Recent Transactions!
-                                <Link to={"/explore"}><button className="bg-white md:text-base text-sm w-auto flex justify-center items-center gap-2 cursor-pointer text-black md:px-5 px-2 py-1 rounded-md hover:bg-zinc-200 transition">View All</button></Link>
+                            <p className='text-white w-full text-left px-7 pb-4 my-1 md:text-2xl text-lg flex justify-between'>Recent Transactions
+                                <Link to={"/transactions"}><button className="bg-white md:text-base text-sm w-auto flex justify-center items-center gap-2 cursor-pointer text-black md:px-5 px-2 py-1 rounded-md hover:bg-zinc-200 transition">View All</button></Link>
                             </p>
                             <div className='w-full px-5'>
                                 <div className='border-white flex items-center gap-3 overflow-auto justify-start'>

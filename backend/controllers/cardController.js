@@ -4,17 +4,11 @@ export const addNewCard = async (req, res) => {
     try {
         const { name, email, transactionType, transactionAmount, tag, transactionDate, notes } = req.body;
 
-        const alreadyAddded = await cardModel.findOne({ requestedBy: req.user._id, email });
-        if (alreadyAddded) {
-            return res.status(409).json({
-                success: false,
-                message: "Card already added"
-            })
-        }
+        const newEmail = email.toLowerCase();
 
         const newCard = new cardModel({
             name,
-            email,
+            email: newEmail,
             transactionType,
             transactionAmount,
             tag,
@@ -54,8 +48,8 @@ export const getAllCards = async (req, res) => {
 
 export const deleteCard = async (req, res) => {
     try {
-        const { id } = req.params; // ✅ from params
-        const result = await cardModel.deleteOne({ _id: id, requestedBy: req.user._id }); // ✅ use _id not id
+        const { id } = req.params; 
+        const result = await cardModel.deleteOne({ _id: id, requestedBy: req.user._id }); 
 
         if (result.deletedCount === 0) {
             return res.status(404).json({
@@ -101,7 +95,7 @@ export const updateCard = async (req, res) => {
                 transactionDate,
                 notes,
             },
-            { new: true } // returns updated document
+            { new: true } 
         );
 
         if (!updatedCard) {

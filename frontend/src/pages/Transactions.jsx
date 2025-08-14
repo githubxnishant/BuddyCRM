@@ -9,7 +9,8 @@ import AddCard from '../components/Transactions/AddCard';
 const Transactions = () => {
 
     const [isNavOpen, setIsNavOpen] = useState(true);
-    const [profileCard, setProfileCard] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
+    const [results, setResults] = useState([]);
     const [addNew, setAddNew] = useState(false);
     const [isEditing, setIsEditing] = useState(true);
     const [added, setAdded] = useState(false);
@@ -25,8 +26,6 @@ const Transactions = () => {
     const dropdownOptions = ["All Categories", "Friends", , "Relative", "Clients", "VIPs", "Others"];
     const [client, setClient] = useState();
 
-    const handleSearch = () => { }
-
     useEffect(() => {
         const mediaQuery = window.matchMedia("(min-width: 768px");
         const handleResize = () => setIsNavOpen(mediaQuery.matches);
@@ -35,11 +34,33 @@ const Transactions = () => {
         return () => mediaQuery.removeEventListener('change', handleResize);
     }, []);
 
-    const toggle = !isNavOpen;
+    useEffect(() => {
+        if (!query) {
+            setResults([]);
+            return;
+        }
+        const debounceTimeout = setTimeout(() => {
+            const fetchData = async () => {
+                setLoading(true);
+                setError(null);
+                try {
+                    const response = await axios.get(
+                        `https://api.example.com/search?q=${encodeURIComponent(query)}`
+                    );
+                    setResults(response.data.results); // adjust depending on API response
+                } catch (err) {
+                    setError(err.message || "Something went wrong");
+                } finally {
+                    setLoading(false);
+                }
+            };
+            fetchData();
+        }, 500);
+        return () => clearTimeout(debounceTimeout);
+    }, [query]);
 
     return (
         <>
-
             <AddCard
                 addNew={addNew}
                 added={added}
@@ -49,7 +70,6 @@ const Transactions = () => {
                     setAddNew(false);
                 }}
             />
-
             <div className='flex z-0 items-center gap-3 h-screen w-screen bg-zinc-900 md:px-4'>
                 {isNavOpen ? <Sidebar /> : ''}
                 <section className={`bg-[#09090b] w-full md:rounded-lg h-screen md:h-[95vh] transition-all md:absolute md:right-4 overflow-scroll duration-500 ${isNavOpen ? 'md:w-[82vw] w-20' : 'md:w-[98vw]'}`}>
@@ -74,12 +94,6 @@ const Transactions = () => {
                                 onChange={(e) => setProfileCard(e.target.value)}
                                 className="bg-transparent text-white border border-zinc-700 px-2 py-1 md:px-4 md:py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-500 w-52 md:w-68 placeholder:text-zinc-400"
                             />
-                            <button
-                                onClick={handleSearch}
-                                className="bg-white cursor-pointer text-black px-4 py-2 md:text-base text-sm rounded-md hover:bg-zinc-200 transition"
-                            >
-                                Search
-                            </button>
                         </div>
 
                         <div className='flex md:w-auto md:justify-center justify-between items-center gap-3'>
@@ -104,13 +118,20 @@ const Transactions = () => {
                     {/* Profile Cards */}
                     <section className='h-[70%] overflow-auto'>
                         <div className='grid sm:grid-cols-2 md:grid-cols-3 overflow-auto gap-5 md:px-5 md:py-0 pb-5 md:mr-4 md:ml-0 mx-7'>
-                            <ExploreCard addNew={added} />
+                            {searchQuery
+                                ? <SearchResults />
+                                : <ExploreCard addNew={added} />
+                            }
                         </div>
                     </section>
                 </section>
             </div>
         </>
     )
+}
+
+function SearchResults() {
+
 }
 
 function LabelInput({ icon, label, name, value, onChange, isEditing, type = "text", placeholder }) {

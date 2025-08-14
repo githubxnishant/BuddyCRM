@@ -37,6 +37,7 @@ const cardSchema = mongoose.Schema({
     }
 }, { timestamps: true });
 
-cardSchema.index({ requestedBy: 1, email: 1 }, { unique: true });
+// cardSchema.index({ requestedBy: 1, email: 1 }, { unique: true });
+// cardSchema.index({ requestedBy: 1, email: 1 });
 
 export default mongoose.model("Card", cardSchema);

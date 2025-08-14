@@ -7,9 +7,6 @@ import {
     LayoutDashboard,
     BookOpen,
     Users,
-    Briefcase,
-    Globe,
-    MoreHorizontal,
     LifeBuoy,
     Send,
     Settings,
@@ -18,32 +15,34 @@ import {
 export default function Sidebar() {
     const [platformOpen, setPlatformOpen] = useState(true);
     const [user, setUser] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const [activeTab, setActiveTab] = useState('dashboard');
 
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUser = async () => {
+            setIsLoading(true);
             const token = localStorage.getItem("authToken");
-
             if (!token) {
                 navigate("/login");
                 return;
             }
-
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/fetch/user`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
-
                 setUser(response.data.user);
             } catch (error) {
                 console.error("Error fetching user:", error);
                 localStorage.removeItem("authToken");
                 navigate("/login");
+            } finally {
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 300)
             }
         };
-
         fetchUser();
     }, []);
 
@@ -67,12 +66,12 @@ export default function Sidebar() {
                 <div className="text-xs uppercase w-full flex justify-start px-2 text-gray-400 mb-2">Quick Nav</div>
 
 
-                <Link to={'/dashboard'}><div onClick={() => setActiveTab("dashboard")} className={`flex transition-all duration-300 items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 ${window.location.href === "http://localhost:5173/dashboard" ? "bg-zinc-700" : ""} cursor-pointer`}>
+                <Link to={'/dashboard'}><div onClick={() => setActiveTab("dashboard")} className={`flex transition-all duration-300 items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 ${window.location.href === `${import.meta.env.VITE_FRONTEND_URL}/dashboard` ? "bg-zinc-700" : ""} cursor-pointer`}>
                     <LayoutDashboard size={16} />
                     Dashboard
                 </div></Link>
 
-                <Link to={'/explore'}><div onClick={() => setActiveTab("explore")} className={`flex transition-all duration-300 items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 ${window.location.href === "http://localhost:5173/explore" ? "bg-zinc-700" : ""} cursor-pointer`}>
+                <Link to={'/transactions'}><div onClick={() => setActiveTab("explore")} className={`flex transition-all duration-300 items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 ${window.location.href === `${import.meta.env.VITE_FRONTEND_URL}/transactions` ? "bg-zinc-700" : ""} cursor-pointer`}>
                     <Users size={16} />
                     {/* <span>Explore</span> */}
                     Transactions
@@ -83,7 +82,7 @@ export default function Sidebar() {
                     <div className="text-xs uppercase text-gray-400 mb-2">Features (Under Dev)</div>
                     <div className="space-y-1">
                         <Link to={'/interactions'}>
-                            <div onClick={() => setActiveTab("interactions")} className={`flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer duration-300 transition-all ${window.location.href === "http://localhost:5173/interactions" ? "bg-zinc-700" : ""}`}>
+                            <div onClick={() => setActiveTab("interactions")} className={`flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer duration-300 transition-all ${window.location.href === `${import.meta.env.VITE_FRONTEND_URL}/interactions` ? "bg-zinc-700" : ""}`}>
                                 <Send size={16} />
                                 <span>Interactions</span>
                             </div>
@@ -111,7 +110,7 @@ export default function Sidebar() {
                             <BookOpen size={16} />
                             <span>Schedules</span>
                         </div>
-                        
+
                         <div className="flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">
                             <Settings size={16} />
                             <span>Settings</span>
@@ -145,13 +144,24 @@ export default function Sidebar() {
                             className="w-7 h-7 rounded-full"
                         /> */}
                         <div className="flex gap-2 items-center justify-center">
-                            <div className="bg-indigo-600 text-white rounded-full w-7 h-7 flex items-center justify-center font-bold text-lg">
-                                {user.name?.charAt(0)}
-                            </div>
-                            <div>
-                                <p className="text-sm font-semibold">{user.name}</p>
-                                <p className="text-xs text-gray-400">{user.email}</p>
-                            </div>
+                            {!isLoading
+                                ? <>
+                                    <div className="bg-indigo-600 text-white rounded-full w-7 h-7 flex items-center justify-center font-bold text-lg">
+                                        {user.name?.charAt(0)}
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-semibold">{user.name}</p>
+                                        <p className="text-xs text-gray-400">{user.email}</p>
+                                    </div>
+                                </>
+                                : <>
+                                    <div className="bg-zinc-400 rounded-full w-7 h-7 flex items-center justify-center animate-pulse"></div>
+                                    <div>
+                                        <div className="bg-zinc-400 rounded w-28 h-4 my-1 animate-pulse"></div>
+                                        <div className="bg-zinc-400 rounded w-32 h-4 animate-pulse"></div>
+                                    </div>
+                                </>
+                            }
                         </div>
                         <ChevronDown size={16} className="text-gray-400 cursor-not-allowed" />
                     </div>

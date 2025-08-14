@@ -15,7 +15,7 @@ import {
 import AddCard from "./AddCard";
 import { toast } from "react-toastify";
 
-export default function ProfileCard({ addNew, setAddNew, added, setAdded }) {
+export default function ExploreCard({ addNew, setAddNew, added, setAdded }) {
     const [cards, setCards] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeEditCard, setActiveEditCard] = useState(null);
@@ -34,10 +34,12 @@ export default function ProfileCard({ addNew, setAddNew, added, setAdded }) {
                 }
             );
             setCards(res.data);
-            setLoading(false);
         } catch (err) {
             console.error("Error fetching cards:", err);
-            setLoading(false);
+        } finally {
+            setTimeout(() => {
+                setLoading(false);
+            }, 1000)
         }
     };
 
@@ -57,7 +59,7 @@ export default function ProfileCard({ addNew, setAddNew, added, setAdded }) {
             );
             if (res.status === 200) {
                 setActiveEditCard(null);
-                fetchCards(); 
+                fetchCards();
                 toast.success("Card deleted successfully!")
             } else {
                 console.error("Delete failed:", res);
@@ -77,12 +79,11 @@ export default function ProfileCard({ addNew, setAddNew, added, setAdded }) {
         fetchCards();
     }, [addNew, updated]);
 
-    if (loading)
+    if (loading) {
         return (
-            <div className="w-7xl min-h-[65vh] flex justify-center items-center text-white">
-                Loading...
-            </div>
-        );
+            Array.from({ length: 6 }, (_, index) => <LoadingCard key={index} />)
+        )
+    }
 
     return (
         <>
@@ -201,6 +202,51 @@ export default function ProfileCard({ addNew, setAddNew, added, setAdded }) {
             )}
         </>
     );
+}
+
+function LoadingCard() {
+    return (
+        <div
+            className="relative md:max-w-md md:w-full md:mx-2 bg-zinc-900 rounded-2xl shadow-lg p-6 space-y-5 border border-zinc-800"
+        >
+            <div className="flex items-center gap-3">
+                <div className="bg-zinc-800 text-white rounded-full animate-pulse w-12 h-10 flex items-center justify-center"></div>
+                <div className="w-full flex items-center justify-between">
+                    <div>
+                        <div className="h-5 w-40 rounded-md bg-zinc-800 animate-pulse"></div>
+                        <div className="h-4 w-32 mt-2 rounded-md bg-zinc-800 animate-pulse"></div>
+                    </div>
+                    <svg
+                        width="20"
+                        height="20"
+                        fill="#27272a"
+                        className="cursor-pointer"
+                        viewBox="0 0 16 16"
+                    >
+                        <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3" />
+                    </svg>
+                </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+                {Array.from({ length: 4 }, (_, index) => (
+                    <div key={index}>
+                        <div className="flex flex-row gap-1">
+                            <div className="bg-zinc-800 px-2 py-1.5 h-5 w-5 rounded animate-pulse"></div>
+                            <div className="flex items-center w-20 gap-1.5 mb-1 h-5 bg-zinc-800 rounded animate-pulse"></div>
+                        </div>
+                        <div className="bg-zinc-800 px-2 py-1.5 h-7 rounded animate-pulse"></div>
+                    </div>
+                ))}
+            </div>
+            <div>
+                <div className="flex flex-row gap-1">
+                    <div className="bg-zinc-800 px-2 py-1.5 h-5 w-5 rounded animate-pulse"></div>
+                    <div className="flex items-center w-20 gap-1.5 mb-1 h-5 bg-zinc-800 rounded animate-pulse"></div>
+                </div>
+                <div className="bg-zinc-800 rounded-md px-3 py-2 min-h-[3rem] animate-pulse"></div>
+            </div>
+        </div>
+    )
 }
 
 function DetailItem({ icon, label, value }) {

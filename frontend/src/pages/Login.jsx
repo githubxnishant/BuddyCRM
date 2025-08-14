@@ -4,6 +4,8 @@ import { BadgeInfo, BadgeInfoIcon, Copy, Info, InfoIcon, LucideBadgeInfo, Lucide
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { motion } from "framer-motion";
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
 
 export default function AuthForm() {
 
@@ -34,16 +36,77 @@ export default function AuthForm() {
                 navigate("/dashboard");
             }
         } catch (error) {
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            if (error.response.status == 404) {
+                console.error("User not found, redirecting to signup", error);
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                toast.update(toastId, {
+                    render: 'User not found, please signup!',
+                    type: 'error',
+                    isLoading: false,
+                    autoClose: 3000,
+                });
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                return navigate("/signup");
+            }
+            if (error.response.status == 406) {
+                console.log("Invalid credentials!");
+                toast.update(toastId, {
+                    render: 'Invalid credentials, please try again!',
+                    type: 'error',
+                    isLoading: false,
+                    autoClose: 3000,
+                });
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            }
+            console.error("Error signing you up with Google:", error);
+            toast.error("Error signing you up with Google!");
+        }
+    };
+
+    const handleGoogleLogin = async (credentialResponse) => {
+        const toastId = toast.loading("Loading...");
+        try {
+            const userObject = jwtDecode(credentialResponse.credential);
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/google-login`, {
+                email: userObject.email,
+            });
+            const { token } = response.data;
+            localStorage.setItem('authToken', token);
+            await new Promise(resolve => setTimeout(resolve, 2000));
             toast.update(toastId, {
-                render: 'Invalid credentials',
-                type: 'error',
+                render: 'Login Successfully! Redirecting to Dashboard...',
+                type: 'success',
                 isLoading: false,
                 autoClose: 2000,
             })
-            console.error("Login Failed", error.response?.data || error.message);
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            navigate("/dashboard");
+        } catch (error) {
+            if (error.response.status == 404) {
+                console.error("User not found, redirecting to signup", error);
+                toast.update(toastId, {
+                    render: 'User not found, please signup!',
+                    type: 'error',
+                    isLoading: false,
+                    autoClose: 3000,
+                });
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                return navigate("/signup");
+            }
+            if (error.response.status == 406) {
+                console.log("Invalid credentials!");
+                toast.update(toastId, {
+                    render: 'Invalid credentials, please try again!',
+                    type: 'error',
+                    isLoading: false,
+                    autoClose: 3000,
+                });
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            }
+            console.error("Error signing you up with Google:", error);
+            toast.error("Error signing you up with Google!");
         }
-    };
+    }
 
     return (
         <div className="min-h-screen bg-[#1e1e1e] flex items-center justify-center px-4">
@@ -60,10 +123,14 @@ export default function AuthForm() {
                     <p className="text-sm text-gray-400">Login with your Google account</p>
                 </div>
 
-                <button className="w-full flex items-center justify-center gap-2 bg-transparent border border-gray-600 text-white px-4 py-2 rounded mb-3 transition-all duration-300 hover:bg-gray-800">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <button className="w-full flex items-center justify-center gap-2 bg-transparent  text-white rounded mb-3">
+                    {/* <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                         <path d="M15.545 6.558a9.4 9.4 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.7 7.7 0 0 1 5.352 2.082l-2.284 2.284A4.35 4.35 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.8 4.8 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.7 3.7 0 0 0 1.599-2.431H8v-3.08z" />
-                    </svg> Login with Google (under dev)
+                    </svg> */}
+                    {/* Login with Google (under dev) */}
+                    <GoogleLogin
+                        onSuccess={(credentialResponse) => handleGoogleLogin(credentialResponse)}
+                        onError={() => console.log('Login Failed')} />
                 </button>
                 {/* <button className="w-full flex items-center justify-center gap-2 bg-transparent border border-gray-600 text-white px-4 py-2 rounded mb-6 hover:bg-gray-800">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-apple" viewBox="0 0 16 16">

@@ -10,12 +10,10 @@ const AddCard = ({ addNew, added, setAdded, editData, onClose, sendUpdateToExplo
     const [tag, setTag] = useState('');
     const [transactionDate, setTransactionDate] = useState('');
     const [notes, setNotes] = useState('');
-    const [isUpdate, setIsUpdate] = useState(false);
 
     const addDropdownOptions = ["Friend", "Relatives", "Client", "VIP", "Others"];
     const addTransactionOptions = ["Owe (Pay)", "Lend (Collect)"];
 
-    // Pre-fill form on edit
     useEffect(() => {
         if (editData) {
             setName(editData.name || '');
@@ -93,7 +91,6 @@ const AddCard = ({ addNew, added, setAdded, editData, onClose, sendUpdateToExplo
                             </button>
                         </div>
 
-                        {/* <form onSubmit={`${editData ? handleSave : handleUpdate}`}> */}
                         <form onSubmit={handleSave}>
                             <div className="space-y-3">
                                 <input
