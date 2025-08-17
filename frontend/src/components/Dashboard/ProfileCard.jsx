@@ -16,9 +16,7 @@ const MiniCards = () => {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setUserCard(response.data);
-                setTimeout(() => {
-                    setIsLoading(false);
-                }, 1000)
+                setIsLoading(false)
             } catch (err) {
                 console.error("Failed to fetch cards:", err);
             }

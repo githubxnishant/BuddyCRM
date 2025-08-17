@@ -6,12 +6,14 @@ import { toast } from 'react-toastify';
 import { motion } from "framer-motion";
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function AuthForm() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [captchaToken, setCaptchaToken] = useState("");
 
     const navigate = useNavigate();
 
@@ -19,10 +21,19 @@ export default function AuthForm() {
         e.preventDefault();
         const toastId = toast.loading("Verifiying...");
         try {
+            if (!captchaToken) {
+                return toast.update(toastId, {
+                    render: 'Captcha is required!',
+                    type: 'warning',
+                    isLoading: false,
+                    autoClose: 2000,
+                })
+            }
             const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, {
                 email: email,
                 password: password,
-            });
+                captchaToken: captchaToken,
+            }, { headers: { 'Content-Type': 'application/json' } });
             if (response.data.success) {
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 toast.update(toastId, {
@@ -58,8 +69,8 @@ export default function AuthForm() {
                 });
                 await new Promise(resolve => setTimeout(resolve, 2000));
             }
-            console.error("Error signing you up with Google:", error);
-            toast.error("Error signing you up with Google!");
+            console.error("Error signing in, please try again!", error);
+            toast.error("Error signing in, please try again!");
         }
     };
 
@@ -180,6 +191,15 @@ export default function AuthForm() {
                                     required
                                 />
                             }
+                        </div>
+
+                        <div className="w-full flex justify-center items-center">
+                            <ReCAPTCHA
+                                theme="light"
+                                badge="topleft"
+                                sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                                onChange={(token) => setCaptchaToken(token)}
+                            />
                         </div>
 
                         <button

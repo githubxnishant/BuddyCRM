@@ -38,9 +38,7 @@ export default function Sidebar() {
                 localStorage.removeItem("authToken");
                 navigate("/login");
             } finally {
-                setTimeout(() => {
-                    setIsLoading(false);
-                }, 300)
+                setIsLoading(false)
             }
         };
         fetchUser();
@@ -65,31 +63,35 @@ export default function Sidebar() {
                 {/* Platform Section */}
                 <div className="text-xs uppercase w-full flex justify-start px-2 text-gray-400 mb-2">Quick Nav</div>
 
+                <Link to={'/dashboard'}>
+                    <div onClick={() => setActiveTab("dashboard")} className={`flex transition-all duration-300 items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 my-1 ${window.location.href === `${import.meta.env.VITE_FRONTEND_URL}/dashboard` ? "bg-zinc-700" : ""} cursor-pointer`}>
+                        <LayoutDashboard size={16} />
+                        Dashboard
+                    </div>
+                </Link>
 
-                <Link to={'/dashboard'}><div onClick={() => setActiveTab("dashboard")} className={`flex transition-all duration-300 items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 ${window.location.href === `${import.meta.env.VITE_FRONTEND_URL}/dashboard` ? "bg-zinc-700" : ""} cursor-pointer`}>
-                    <LayoutDashboard size={16} />
-                    Dashboard
-                </div></Link>
+                <Link to={'/transactions'}>
+                    <div onClick={() => setActiveTab("explore")} className={`flex transition-all duration-300 items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 my-1 ${window.location.href === `${import.meta.env.VITE_FRONTEND_URL}/transactions` ? "bg-zinc-700" : ""} cursor-pointer`}>
+                        <Users size={16} />
+                        {/* <span>Explore</span> */}
+                        Transactions
+                    </div>
+                </Link>
 
-                <Link to={'/transactions'}><div onClick={() => setActiveTab("explore")} className={`flex transition-all duration-300 items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 ${window.location.href === `${import.meta.env.VITE_FRONTEND_URL}/transactions` ? "bg-zinc-700" : ""} cursor-pointer`}>
-                    <Users size={16} />
-                    {/* <span>Explore</span> */}
-                    Transactions
-                </div></Link>
+                <Link to={'/interactions'}>
+                    <div onClick={() => setActiveTab("interactions")} className={`flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer duration-300 transition-all ${window.location.href === `${import.meta.env.VITE_FRONTEND_URL}/interactions` ? "bg-zinc-700" : ""}`}>
+                        <Send size={16} />
+                        <span>Interactions</span>
+                    </div>
+                </Link>
 
                 {/* Projects Section */}
                 <div className="mt-6">
                     <div className="text-xs uppercase text-gray-400 mb-2">Features (Under Dev)</div>
                     <div className="space-y-1">
-                        <Link to={'/interactions'}>
-                            <div onClick={() => setActiveTab("interactions")} className={`flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer duration-300 transition-all ${window.location.href === `${import.meta.env.VITE_FRONTEND_URL}/interactions` ? "bg-zinc-700" : ""}`}>
-                                <Send size={16} />
-                                <span>Interactions</span>
-                            </div>
-                        </Link>
                         <button
                             onClick={() => setPlatformOpen(!platformOpen)}
-                            className="flex items-center justify-between w-full text-sm px-2 py-1.5 rounded hover:bg-zinc-800"
+                            className="flex items-center justify-between w-full text-sm px-2 py-1.5 rounded hover:bg-zinc-800 transition-all duration-300 cursor-pointer"
                         >
                             <div className="flex items-center gap-2">
                                 <LayoutDashboard size={16} />
@@ -100,18 +102,18 @@ export default function Sidebar() {
 
                         {platformOpen && (
                             <div className="ml-6 space-y-1 transition-all duration-500 border-l px-2">
-                                <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">Settlements</div>
-                                <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">Priorities</div>
-                                <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">Visualize</div>
+                                <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-not-allowed transition-all duration-300 ">Settlements</div>
+                                <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-not-allowed transition-all duration-300 ">Priorities</div>
+                                <div className="text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-not-allowed transition-all duration-300 ">Visualize</div>
                             </div>
                         )}
 
-                        <div className="flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">
+                        <div className="flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-not-allowed transition-all duration-300 ">
                             <BookOpen size={16} />
                             <span>Schedules</span>
                         </div>
 
-                        <div className="flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">
+                        <div className="flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-not-allowed transition-all duration-300 ">
                             <Settings size={16} />
                             <span>Settings</span>
                         </div>
@@ -126,11 +128,11 @@ export default function Sidebar() {
 
             {/* Footer */}
             <div className="space-y-2">
-                <div className="flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">
+                <div className="flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-not-allowed transition-all duration-300 ">
                     <LifeBuoy size={16} />
                     <span>Support</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-pointer">
+                <div className="flex items-center gap-2 text-sm hover:bg-zinc-800 rounded px-2 py-1 cursor-not-allowed transition-all duration-300 ">
                     <Send size={16} />
                     <span>Feedback</span>
                 </div>
@@ -147,7 +149,10 @@ export default function Sidebar() {
                             {!isLoading
                                 ? <>
                                     <div className="bg-indigo-600 text-white rounded-full w-7 h-7 flex items-center justify-center font-bold text-lg">
-                                        {user.name?.charAt(0)}
+                                        {!user.picture
+                                            ? user.name?.charAt(0)
+                                            : <img src={user.picture} alt="profile picture" className="w-7 h-7 rounded-full" />
+                                        }
                                     </div>
                                     <div>
                                         <p className="text-sm font-semibold">{user.name}</p>

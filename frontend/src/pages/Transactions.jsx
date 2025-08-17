@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import Sidebar from '../utils/SideNav'
 import Dropdown from '../utils/Dropdown';
 import ExploreCard from '../components/Transactions/ExploreCard';
-import { Tag, User, StickyNote, House, Calendar, Edit, Save, Mail, Cross, EyeClosed, X, ShieldAlert } from "lucide-react";
-import axios from 'axios';
+import { ShieldAlert } from "lucide-react";
 import AddCard from '../components/Transactions/AddCard';
+import axios from 'axios';
 
 const Transactions = () => {
 
@@ -12,19 +12,9 @@ const Transactions = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [results, setResults] = useState([]);
     const [addNew, setAddNew] = useState(false);
-    const [isEditing, setIsEditing] = useState(true);
     const [added, setAdded] = useState(false);
 
-    const handleChange = (e) => {
-        setClient({ ...client, [e.target.name]: e.target.value });
-    };
-
-    const toggleEdit = () => {
-        setIsEditing(!isEditing);
-    };
-
     const dropdownOptions = ["All Categories", "Friends", , "Relative", "Clients", "VIPs", "Others"];
-    const [client, setClient] = useState();
 
     useEffect(() => {
         const mediaQuery = window.matchMedia("(min-width: 768px");
@@ -33,6 +23,27 @@ const Transactions = () => {
         mediaQuery.addEventListener('change', handleResize);
         return () => mediaQuery.removeEventListener('change', handleResize);
     }, []);
+
+    useEffect(() => {
+        const debounceTimeout = setTimeout(() => {
+            const fetchData = async () => {
+                try {
+                    const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/card/search`, {
+                        headers: { Authorization: `Bearer ${token}` },
+                    },
+                        { email: searchQuery });
+                    if (response) {
+                        setResults(response);
+                    }
+                    console.log(searchQuery);
+                } catch (error) {
+                    console.log('Error searching cards', error);
+                }
+            }
+            fetchData();
+        }, 500)
+        return () => clearTimeout(debounceTimeout)
+    }, [searchQuery])
 
     return (
         <>
@@ -66,8 +77,8 @@ const Transactions = () => {
                                 type="email"
                                 placeholder="mailxnishant@gmail.com"
                                 value={searchQuery}
-                                onChange={(e) => setProfileCard(e.target.value)}
-                                className="bg-transparent text-white border border-zinc-700 px-2 py-1 md:px-4 md:py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-500 w-52 md:w-68 placeholder:text-zinc-400"
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="bg-transparent text-white border border-zinc-700 px-2 py-1 md:px-4 md:py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-500 w-full md:w-80 placeholder:text-zinc-400"
                             />
                         </div>
 
@@ -76,7 +87,7 @@ const Transactions = () => {
                             <button
                                 value={addNew}
                                 onClick={() => setAddNew(!addNew)}
-                                className="bg-white md:text-base text-sm cursor-pointer text-black px-2 md:px-4 py-2 rounded-md hover:bg-zinc-200 transition"
+                                className="bg-white md:text-base text-sm w-28 cursor-pointer text-black px-2 md:px-4 py-2 rounded-md hover:bg-zinc-200 transition"
                             >
                                 Add New
                             </button>
@@ -94,7 +105,7 @@ const Transactions = () => {
                     <section className='h-[70%] overflow-auto'>
                         <div className='grid sm:grid-cols-2 md:grid-cols-3 overflow-auto gap-5 md:px-5 md:py-0 pb-5 md:mr-4 md:ml-0 mx-7'>
                             {searchQuery
-                                ? <SearchResults />
+                                ? <SearchResults rquery={results} />
                                 : <ExploreCard addNew={added} />
                             }
                         </div>
@@ -105,8 +116,10 @@ const Transactions = () => {
     )
 }
 
-function SearchResults() {
-
+function SearchResults(query) {
+    return (
+        <Text>{query}</Text>
+    )
 }
 
 function LabelInput({ icon, label, name, value, onChange, isEditing, type = "text", placeholder }) {

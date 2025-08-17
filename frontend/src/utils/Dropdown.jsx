@@ -6,7 +6,7 @@ export default function Dropdown({categories = []}) {
     const [open, setOpen] = useState(false);
 
     return (
-        <div className="relative md:w-48 w-52 text-sm text-white">
+        <div className="relative md:w-48 w-full text-sm text-white">
             {/* Dropdown Button */}
             <button
                 onClick={() => setOpen(!open)}

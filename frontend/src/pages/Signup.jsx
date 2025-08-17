@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { motion } from "framer-motion";
 import { GoogleLogin, useGoogleOAuth } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function AuthForm() {
 
@@ -14,16 +15,26 @@ export default function AuthForm() {
     const [email, setEmail] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [password, setPassword] = useState('');
+    const [captchaToken, setCaptchaToken] = useState('')
 
     const handleRegister = async (e) => {
+        e.preventDefault();
         const toastId = toast.loading("Loading...");
         try {
-            e.preventDefault();
+            if (!captchaToken) {
+                return toast.update(toastId, {
+                    render: 'Captcha is required!',
+                    type: 'warning',
+                    isLoading: false,
+                    autoClose: 2000,
+                })
+            }
             const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/register`, {
                 name,
                 email,
                 password,
-            });
+                captchaToken,
+            }, { headers: { 'Content-Type': 'application/json' } });
             const { token } = response.data;
             localStorage.setItem('authToken', token);
             await new Promise(resolve => setTimeout(resolve, 1000));
@@ -203,6 +214,13 @@ export default function AuthForm() {
                                 required
                             />
                         }
+                    </div>
+
+                    <div className="w-full flex justify-center items-center">
+                        <ReCAPTCHA
+                            sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                            onChange={(token) => setCaptchaToken(token)}
+                        />
                     </div>
 
                     <button

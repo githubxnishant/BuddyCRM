@@ -59,10 +59,8 @@ const Dashboard = () => {
             .filter(txn => txn.transactionType === "Lend (Collect)")
             .filter(txn => txn.transactionType === "Lend (Collect)")
             .reduce((sum, txn) => sum + txn.transactionAmount, 0);
-        setLendAmount(totalLend);
-        setTimeout(() => {
-            setStatLoading(false);
-        }, 1000);
+        setLendAmount(totalLend)
+        setStatLoading(false);
     }, [userCard])
 
     useEffect(() => {
@@ -83,9 +81,7 @@ const Dashboard = () => {
                 localStorage.removeItem("authToken");
                 navigate("/login");
             } finally {
-                setTimeout(() => {
-                    setUserLoading(false);
-                }, 1000);
+                setUserLoading(false)
             }
         };
         fetchUser();
@@ -123,7 +119,7 @@ const Dashboard = () => {
                     <section className='md:flex grid grid-rows-2 grid-cols-2 px-5 md:py-0 py-3 overflow-scroll gap-3 md:gap-0 md:my-0 my-5'>
                         {!statLoading
                             ? <>
-                                <DashboardStatCard heading={"Connections"} stats={`${connectionLength}+`} subheading={"Connected till now"} />
+                                <DashboardStatCard heading={"Transactions"} stats={`${connectionLength}+`} subheading={"Transactions till now"} />
                                 <DashboardStatCard heading={"Owe Amount"} stats={`₹ ${oweAmount}`} subheading={"Have to be paid"} />
                                 <DashboardStatCard heading={"Lend Amount"} stats={`₹ ${lendAmount}`} subheading={"Have to be collected"} />
                                 <DashboardStatCard heading={"Interactions"} stats={"0+"} subheading={"Interacted till now"} />

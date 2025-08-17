@@ -37,9 +37,7 @@ export default function ExploreCard({ addNew, setAddNew, added, setAdded }) {
         } catch (err) {
             console.error("Error fetching cards:", err);
         } finally {
-            setTimeout(() => {
-                setLoading(false);
-            }, 1000)
+            setLoading(false);
         }
     };
 
@@ -89,7 +87,7 @@ export default function ExploreCard({ addNew, setAddNew, added, setAdded }) {
         <>
             {cards.length === 0 ? (
                 <div className="text-white min-h-[65vh] w-[315%] flex justify-center items-center">
-                    Add a card!
+                    No card found!
                 </div>
             ) : (
                 <>

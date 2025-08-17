@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const Hero = () => {
     return (
-        <section className="md:px-16 md:py-12 pt-12 md:h-[80vh] bg-white">
+        <section className="md:px-16 md:py-12 pt-12 md:h-[80vh]">
             <div className="grid grid-rows-2 md:grid-rows-0 md:grid-cols-2 lg:flex-row items-center justify-between gap-10 md:gap-12 max-w-screen">
                 {/* SVG Pattern Background */}
                 <motion.div
