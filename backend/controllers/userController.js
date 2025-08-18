@@ -1,15 +1,30 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import userModel from "../models/user.model.js";
+import axios from 'axios';
 
 export const userRegister = async (req, res) => {
     try {
-        const { name, email, password, picture } = req.body;
+        const { name, email, password, picture, captchaToken } = req.body;
+        if (!captchaToken) return res.status(400).json({ message: "Captcha is required" });
         if (!name || !email || !password) {
             return res.status(400).json({
                 success: false,
                 message: "Name, email, and password are required.",
             });
+        }
+        const response = await axios.post(
+            `https://www.google.com/recaptcha/api/siteverify`,
+            {},
+            {
+                params: {
+                    secret: process.env.RECAPTCHA_SECRET_KEY,
+                    response: captchaToken,
+                },
+            }
+        );
+        if (!response.data.success) {
+            return res.status(400).json({ message: "Captcha verification failed" });
         }
         const existingUser = await userModel.findOne({ email });
         if (existingUser) {
@@ -55,14 +70,12 @@ export const userRegister = async (req, res) => {
 export const userLogin = async (req, res) => {
     try {
         const { email, password } = req.body;
-
         if (!email || !password) {
             return res.status(400).json({
                 success: false,
                 message: "Email and password are required.",
             });
         }
-
         const user = await userModel.findOne({ email });
         if (!user) {
             return res.status(404).json({
@@ -70,7 +83,6 @@ export const userLogin = async (req, res) => {
                 message: 'User not found'
             });
         }
-
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(406).json({
@@ -78,15 +90,12 @@ export const userLogin = async (req, res) => {
                 message: 'Invalid credentials'
             });
         }
-
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
-
         return res.status(200).json({
             success: true,
             message: 'Login successful',
             token,
         });
-
     } catch (error) {
         console.error("User authentication failed!", error);
         return res.status(500).json({
@@ -102,21 +111,17 @@ export const getUser = async (req, res) => {
         if (!token) {
             return res.status(401).json({ error: "Token missing from request" });
         }
-
         let decoded;
         try {
             decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
         } catch (err) {
             return res.status(401).json({ error: "Invalid or expired token" });
         }
-
         const user = await userModel.findById(decoded.id).select("-password");
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
-
         res.status(200).json({ user });
-
     } catch (error) {
         console.error("Server error in getUser:", error);
         res.status(500).json({ error: "Server error" });
@@ -126,14 +131,12 @@ export const getUser = async (req, res) => {
 export const googleRegister = async (req, res) => {
     try {
         const { name, email, password, picture } = req.body;
-
         if (!name || !email || !password) {
             return res.status(400).json({
                 success: false,
                 message: "Name and email are required.",
             });
         }
-
         let user = await userModel.findOne({ email });
         if (user) {
             return res.status(409).json({
@@ -142,25 +145,20 @@ export const googleRegister = async (req, res) => {
                 message: "User already exists",
             });
         }
-
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-
         user = new userModel({
             name,
             email,
             picture: picture || '',
             password: hashedPassword,
         });
-
         await user.save();
-
         const token = jwt.sign(
             { id: user._id },
             process.env.JWT_SECRET_KEY,
             { expiresIn: '1h' }
         );
-
         res.status(201).json({
             success: true,
             message: "User registered successfully",
@@ -187,7 +185,7 @@ export const googleLogin = async (req, res) => {
         if (!email) {
             return res.status(400).json({
                 success: false,
-                message: "Email and password are required.",
+                message: "Email is required.",
             });
         }
         const user = await userModel.findOne({ email });

@@ -4,14 +4,16 @@ import helmet from 'helmet'
 import { config } from 'dotenv';
 import userRouter from "./routes/userRoute.js";
 import cardRouter from './routes/cardRoute.js';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
 config({
-    path: "./config/.env",
+    path: ".env",
 })
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(helmet())
 app.use(
     cors({

@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react'
 import Sidebar from '../utils/SideNav'
 import Dropdown from '../utils/Dropdown';
 import ExploreCard from '../components/Transactions/ExploreCard';
-import { ShieldAlert } from "lucide-react";
+import { Link, ShieldAlert } from "lucide-react";
 import AddCard from '../components/Transactions/AddCard';
 import axios from 'axios';
+import { useTimer } from '../context/TimerContext';
 
 const Transactions = () => {
 
@@ -13,6 +14,7 @@ const Transactions = () => {
     const [results, setResults] = useState([]);
     const [addNew, setAddNew] = useState(false);
     const [added, setAdded] = useState(false);
+    const { sessionTimeout } = useTimer();
 
     const dropdownOptions = ["All Categories", "Friends", , "Relative", "Clients", "VIPs", "Others"];
 
@@ -24,26 +26,26 @@ const Transactions = () => {
         return () => mediaQuery.removeEventListener('change', handleResize);
     }, []);
 
-    useEffect(() => {
-        const debounceTimeout = setTimeout(() => {
-            const fetchData = async () => {
-                try {
-                    const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/card/search`, {
-                        headers: { Authorization: `Bearer ${token}` },
-                    },
-                        { email: searchQuery });
-                    if (response) {
-                        setResults(response);
-                    }
-                    console.log(searchQuery);
-                } catch (error) {
-                    console.log('Error searching cards', error);
-                }
-            }
-            fetchData();
-        }, 500)
-        return () => clearTimeout(debounceTimeout)
-    }, [searchQuery])
+    // useEffect(() => {
+    //     const debounceTimeout = setTimeout(() => {
+    //         const fetchData = async () => {
+    //             try {
+    //                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/card/search`, {
+    //                     headers: { Authorization: `Bearer ${token}` },
+    //                 },
+    //                     { email: searchQuery });
+    //                 if (response) {
+    //                     setResults(response);
+    //                 }
+    //                 console.log(searchQuery);
+    //             } catch (error) {
+    //                 console.log('Error searching cards', error);
+    //             }
+    //         }
+    //         fetchData();
+    //     }, 500)
+    //     return () => clearTimeout(debounceTimeout)
+    // }, [searchQuery])
 
     return (
         <>
@@ -60,14 +62,22 @@ const Transactions = () => {
                 {isNavOpen ? <Sidebar /> : ''}
                 <section className={`bg-[#09090b] w-full md:rounded-lg h-screen md:h-[95vh] transition-all md:absolute md:right-4 overflow-scroll duration-500 ${isNavOpen ? 'md:w-[82vw] w-20' : 'md:w-[98vw]'}`}>
                     {/* Top Header */}
-                    <div className='h-12 px-5 flex items-center w-full border-b-2 border-zinc-900'>
-                        <div value='isNavOpen' className='cursor-pointer' onClick={() => setIsNavOpen(!isNavOpen)}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" ><rect width="18" height="18" x="3" y="3" rx="2" />
-                                <path d="M15 3v18" />
-                            </svg>
+                    <div className='h-12 px-5 flex items-center w-full border-b-2 sticky top-0 bg-[#09090b] border-zinc-900'>
+                        <div className='flex items-center justify-between w-full'>
+                            <div className='flex w-auto max-w-full'>
+                                <div value='isNavOpen' className='cursor-pointer' onClick={() => setIsNavOpen(!isNavOpen)}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" ><rect width="18" height="18" x="3" y="3" rx="2" />
+                                        <path d="M15 3v18" />
+                                    </svg>
+                                </div>
+                                <div className='mx-4 h-5 border-1 border-[#27272a]'></div>
+                                <p className='text-white'>Transactions</p>
+                            </div>
+                            <div className='flex md:gap-3 gap-2 items-center'>
+                                    <button className='bg-white flex md:text-sm text-xs justify-center items-center gap-2 cursor-not-allowed text-black px-2 rounded-full hover:bg-zinc-200 py-1 transition font-semibold'>Explore Plus</button>
+                                <p className='flex md:text-sm text-xs justify-center items-center gap-2 cursor-not-allowed text-white px-2 rounded-full border py-1 transition animate-pulse'>Expiry: {sessionTimeout}</p>
+                            </div>
                         </div>
-                        <div className='mx-4 h-5 border-1 border-[#27272a]'></div>
-                        <p className='text-white'>Transactions</p>
                     </div>
 
                     {/* Bottom Header */}

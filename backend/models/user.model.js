@@ -15,6 +15,11 @@ const userSchema = mongoose.Schema({
     },
     picture: {
         type: String,
+    },
+    credits: {
+        type: Number,
+        default: 10,
+        required: true,
     }
 });
 

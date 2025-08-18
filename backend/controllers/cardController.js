@@ -108,3 +108,24 @@ export const updateCard = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+
+export const searchCard = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const result = await cardModel.find({email: email, requestedBy: req.user._id});
+        if(result){
+            res.status(200).json({
+                success: true,
+                message: "Card found successfully".
+                result
+            })
+        }
+    } catch (error) {
+        console.error('Search error', error);
+        res.status(500).json({ 
+            message: 'Error searching card', 
+            success: false,
+            error
+        })
+    }
+}

@@ -1,0 +1,1 @@
+# Buddy CRM - Agentic AI based CRM tool

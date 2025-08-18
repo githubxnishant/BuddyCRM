@@ -4,6 +4,7 @@ import axios from 'axios';
 import DashboardStatCard from '../components/Dashboard/StatCard';
 import MiniCards from '../components/Dashboard/ProfileCard';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTimer } from '../context/TimerContext';
 
 const Dashboard = () => {
 
@@ -15,7 +16,9 @@ const Dashboard = () => {
     const [lendAmount, setLendAmount] = useState('');
     const [statLoading, setStatLoading] = useState(false);
     const [userLoading, setUserLoading] = useState(false);
+
     const navigate = useNavigate();
+    const { sessionTimeout } = useTimer();
 
     //Logout Function
     const handleLogout = () => {
@@ -95,26 +98,41 @@ const Dashboard = () => {
                 {isNavOpen ? <Sidebar /> : ''}
                 <section className={`bg-[#09090b] md:rounded-lg h-screen md:h-[95vh] transition-all md:absolute md:right-4 overflow-scroll duration-500 ${toggle ? 'md:w-[82vw] w-20' : 'md:w-[98vw]'}`}>
                     {/* Top Header */}
-                    <div className='h-12 px-5 flex items-center w-full border-b-2 border-zinc-900'>
-                        <div value='isNavOpen' className='cursor-pointer' onClick={() => setIsNavOpen(!isNavOpen)}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" ><rect width="18" height="18" x="3" y="3" rx="2" />
-                                <path d="M15 3v18" />
-                            </svg>
+                    <div className='h-12 px-5 flex items-center w-full border-b-2 sticky top-0 bg-[#09090b] border-zinc-900'>
+                        <div className='flex items-center justify-between w-full'>
+                            <div className='flex w-auto max-w-full'>
+                                <div value='isNavOpen' className='cursor-pointer' onClick={() => setIsNavOpen(!isNavOpen)}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" ><rect width="18" height="18" x="3" y="3" rx="2" />
+                                        <path d="M15 3v18" />
+                                    </svg>
+                                </div>
+                                <div className='mx-4 h-5 border-1 border-[#27272a]'></div>
+                                <p className='text-white'>Dashboard</p>
+                            </div>
+                            <div className='flex md:gap-3 gap-2 items-center'>
+                                <button className='bg-white flex md:text-sm text-xs justify-center items-center gap-2 cursor-not-allowed  text-black px-2 rounded-full hover:bg-zinc-200 py-1 transition font-semibold'>Explore Plus</button>
+                                <p className='flex md:text-sm text-xs justify-center items-center gap-2 cursor-not-allowed text-white px-2 rounded-full border py-1 transition animate-pulse'>Expiry: {sessionTimeout}</p>
+                            </div>
                         </div>
-                        <div className='mx-4 h-5 border-1 border-[#27272a]'></div>
-                        <p className='text-white'>Dashboard</p>
                     </div>
 
                     {/* Greeting div */}
                     <div className='md:mx-7 mx-5 mt-2 pt-2 md:px-3'>
-                        <p className='text-white text-lg  flex justify-between'>Welcome 👋
-                            <button onClick={handleLogout} className='bg-white flex text-sm justify-center items-center gap-2 cursor-pointer text-black md:px-4 px-2 py-1 md:py-2 rounded-md hover:bg-zinc-200 transition'>Logout</button>
-                        </p>
+                        {userLoading
+                            ? <div className='flex justify-between'>
+                                <div className='h-8 w-28 mb-3 animate-pulse bg-zinc-800 rounded'></div>
+                                <div className='h-10 w-20 mb-3 animate-pulse bg-zinc-800 rounded'></div>
+                            </div>
+                            : <p className='text-white text-lg flex justify-between'>Welcome 👋
+                                <button onClick={handleLogout} className='bg-white flex text-sm justify-center items-center gap-2 cursor-pointer text-black md:px-4 px-2 py-1 md:py-2 rounded-md hover:bg-zinc-200 transition'>Logout</button>
+                            </p>
+                        }
                         {!userLoading
                             ? <h1 className='text-white text-2xl md:text-4xl'>{userName}</h1>
                             : <div className='h-12 w-60 animate-pulse bg-zinc-800 rounded'></div>
                         }
                     </div>
+
                     {/* Stats Card */}
                     <section className='md:flex grid grid-rows-2 grid-cols-2 px-5 md:py-0 py-3 overflow-scroll gap-3 md:gap-0 md:my-0 my-5'>
                         {!statLoading
@@ -134,11 +152,18 @@ const Dashboard = () => {
                         }
                     </section>
 
+                    {/* Recent Transactions */}
                     <section className='md:px-7 px-5 mb-5 md:mb-7 flex items-center w-full'>
                         <div className='flex py-3 flex-col items-center h-full w-full border-2 rounded-lg border-[#27272a]'>
-                            <p className='text-white w-full text-left px-7 pb-4 my-1 md:text-2xl text-lg flex justify-between'>Recent Transactions
-                                <Link to={"/transactions"}><button className="bg-white md:text-base text-sm w-auto flex justify-center items-center gap-2 cursor-pointer text-black md:px-5 px-2 py-1 rounded-md hover:bg-zinc-200 transition">View All</button></Link>
-                            </p>
+                            {userLoading
+                                ? <div className='w-full px-7 pb-4 flex my-1 justify-between'>
+                                    <div className="bg-zinc-800 h-8 w-60 rounded"></div>
+                                    <div className="bg-zinc-800 h-8 w-20 rounded"></div>
+                                </div>
+                                : <p className='text-white w-full text-left px-7 pb-4 my-1 md:text-2xl text-lg flex justify-between'>Recent Transactions
+                                    <Link to={"/transactions"}><button className="bg-white md:text-base text-sm w-auto flex justify-center items-center gap-2 cursor-pointer text-black md:px-5 px-2 py-1 rounded-md hover:bg-zinc-200 transition">View All</button></Link>
+                                </p>
+                            }
                             <div className='w-full px-5'>
                                 <div className='border-white flex items-center gap-3 overflow-auto justify-start'>
                                     <MiniCards />
@@ -146,6 +171,7 @@ const Dashboard = () => {
                             </div>
                         </div>
                     </section>
+
                 </section>
             </div>
         </>

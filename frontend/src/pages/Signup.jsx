@@ -82,13 +82,13 @@ export default function AuthForm() {
             localStorage.setItem('authToken', token);
             await new Promise(resolve => setTimeout(resolve, 2000));
             toast.update(toastId, {
-                render: 'Register Successfully, please login!',
+                render: 'Registered Successfully!',
                 type: 'success',
                 isLoading: false,
                 autoClose: 2000,
             })
             await new Promise(resolve => setTimeout(resolve, 2000));
-            navigate("/login");
+            navigate("/dashboard");
         } catch (error) {
             if (error.response.status == 409) {
                 console.log("User already exists, redirecting to login")
@@ -170,21 +170,6 @@ export default function AuthForm() {
                         />
                     </div>
 
-                    {/* <div>
-                        <label htmlFor="password" className="text-sm flex justify-between">
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="••••••••"
-                            className="w-full mt-1 px-3 py-2 bg-[#1e1e1e] border border-gray-700 rounded text-sm placeholder-gray-400 focus:outline-none focus:ring focus:ring-indigo-500"
-                            required
-                        />
-                    </div> */}
-
                     <div>
                         <label className="text-sm flex justify-between">
                             Password
@@ -216,12 +201,10 @@ export default function AuthForm() {
                         }
                     </div>
 
-                    <div className="w-full flex justify-center items-center">
-                        <ReCAPTCHA
-                            sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-                            onChange={(token) => setCaptchaToken(token)}
-                        />
-                    </div>
+                    <ReCAPTCHA
+                        sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                        onChange={(token) => setCaptchaToken(token)}
+                    />
 
                     <button
                         type="submit"

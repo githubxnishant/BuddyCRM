@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { BadgeInfo, BadgeInfoIcon, Copy, Info, InfoIcon, LucideBadgeInfo, LucideInfo, X } from "lucide-react";
+import { Copy, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { motion } from "framer-motion";
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
-import ReCAPTCHA from "react-google-recaptcha";
+import { useTimer } from "../context/TimerContext";
 
 export default function AuthForm() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const [captchaToken, setCaptchaToken] = useState("");
 
     const navigate = useNavigate();
+    const { saveAuthToken } = useTimer();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -32,7 +32,6 @@ export default function AuthForm() {
             const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, {
                 email: email,
                 password: password,
-                captchaToken: captchaToken,
             }, { headers: { 'Content-Type': 'application/json' } });
             if (response.data.success) {
                 await new Promise(resolve => setTimeout(resolve, 1000));
@@ -75,22 +74,22 @@ export default function AuthForm() {
     };
 
     const handleGoogleLogin = async (credentialResponse) => {
-        const toastId = toast.loading("Loading...");
+        const toastId = toast.loading("Verifying...");
         try {
             const userObject = jwtDecode(credentialResponse.credential);
             const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/google-login`, {
                 email: userObject.email,
-            });
+            }, { headers: { "Content-Type": "application/json" } });
             const { token } = response.data;
-            localStorage.setItem('authToken', token);
             await new Promise(resolve => setTimeout(resolve, 2000));
+            localStorage.setItem('authToken', token);
+            saveAuthToken(token);
             toast.update(toastId, {
                 render: 'Redirecting to Dashboard!',
                 type: 'success',
                 isLoading: false,
                 autoClose: 2000,
             })
-            await new Promise(resolve => setTimeout(resolve, 2000));
             navigate("/dashboard");
         } catch (error) {
             if (error.response.status == 404) {
@@ -104,21 +103,10 @@ export default function AuthForm() {
                 await new Promise(resolve => setTimeout(resolve, 2000));
                 return navigate("/signup");
             }
-            if (error.response.status == 406) {
-                console.log("Invalid credentials!");
-                toast.update(toastId, {
-                    render: 'Invalid credentials, please try again!',
-                    type: 'error',
-                    isLoading: false,
-                    autoClose: 3000,
-                });
-                await new Promise(resolve => setTimeout(resolve, 2000));
-            }
             console.error("Error signing you up with Google:", error);
             toast.error("Error signing you up with Google!");
         }
     }
-
 
     return (
         <>
@@ -191,15 +179,6 @@ export default function AuthForm() {
                                     required
                                 />
                             }
-                        </div>
-
-                        <div className="w-full flex justify-center items-center">
-                            <ReCAPTCHA
-                                theme="light"
-                                badge="topleft"
-                                sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-                                onChange={(token) => setCaptchaToken(token)}
-                            />
                         </div>
 
                         <button
