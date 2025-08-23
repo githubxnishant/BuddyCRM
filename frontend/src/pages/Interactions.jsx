@@ -106,7 +106,7 @@ const Interactions = () => {
                                 <thead className='h-12 bg-zinc-900 sticky top-0'>
                                     <tr>
                                         <td>S.no.</td>
-                                        <td>Date</td>
+                                        <td>Scheduled</td>
                                         <td>Name</td>
                                         <td>Email</td>
                                         <td>Amount</td>
@@ -118,12 +118,15 @@ const Interactions = () => {
                                     {Array.from({ length: 50 }, (_, index) => (
                                         <tr key={index} className='h-12 border-y'>
                                             <td>{index + 1}</td>
-                                            <td>2025-08-01</td>
+                                            <td>18-08-2025</td>
                                             <td>Aarav Mehta</td>
                                             <td>aarav.mehta@example.com</td>
                                             <td className="num">₹12,499.00</td>
                                             <td><span className="chip">Friendly</span></td>
-                                            <td></td>
+                                            <td>
+                                                <button className='text-white cursor-pointer border px-3 py-1 rounded mr-2'>View</button>
+                                                <button className='text-white cursor-pointer border px-3 py-1 rounded'>Delete</button>
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
